@@ -1,6 +1,6 @@
 # A Data-Driven Approach to Defining Risk-Adjusted Coding Specificity Metrics for a Large U.S. Dementia Patient Cohort
 # Citations
-Richardson, K.; Penumaka, S.; Smoot, J.; Panaganti, M.R.; Chinta, I.R.; Guduri, D.P.; Tiyyagura, S.R.; Martin, J.; Korvink, M.; Gunn, L.H. A Data-Driven Approach to Defining Risk-Adjusted Coding Specificity Metrics for a Large U.S. Dementia Patient Cohort. Healthcare 2024, 12, 983. (https://doi.org/10.3390/healthcare12100983)
+Richardson, K.; Penumaka, S.; Smoot, J.; Panaganti, M.R.; Chinta, I.R.; Guduri, D.P.; Tiyyagura, S.R.; Martin, J.; Korvink, M.; Gunn, L.H. A Data-Driven Approach to Defining Risk-Adjusted Coding Specificity Metrics for a Large U.S. Dementia Patient Cohort. Healthcare 2024, 12, 983. https://doi.org/10.3390/healthcare12100983
 # Abstract
 Medical coding impacts patient care quality, payor reimbursement, and system reliability through the precision of patient information documentation. This study presents a data-driven approach to define risk-adjusted coding specificity metrics using a large dataset of U.S. dementia patient records. The aim is to provide a novel risk-adjusted metric to estimate dementia ICD-10 coding specificity by facility upon adjusting for commonly available facility- and patient-level characteristics.
 # Key Findings
@@ -11,7 +11,7 @@ Medical coding impacts patient care quality, payor reimbursement, and system rel
 The study uses de-identified data sourced and provided by Premier, Inc.'s private database, consisting of nearly 500,000 unique inpatient hospitalization records of individuals diagnosed with dementia and discharged in 2022. Detailed statistical analyses were conducted to identify associations between patient- and facility-level characteristics and the specificity of dementia diagnoses.
 
 # License
-This project is licensed under the terms and conditions of the Creative Commons Attribution (CC BY) license. See the [LICENSE] (https://creativecommons.org/licenses/by/4.0/) file for details.
+This project is licensed under the terms and conditions of the Creative Commons Attribution (CC BY) license. See the [LICENSE](https://creativecommons.org/licenses/by/4.0/) file for details.
 
 # Dependencies
 The project requires the following R packages:
