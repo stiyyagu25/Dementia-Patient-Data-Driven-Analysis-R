@@ -30,13 +30,13 @@ The project requires the following R packages:
 - plyr: Package used to map values to descriptions (function mapvalues)
 
 ## Authors
+- Sucharitha Reddy Tiyyagura (UNC Charlotte)
 - Kaylla Richardson (UNC Charlotte)
 - Sankari Penumaka (UNC Charlotte)
 - Jaleesa Smoot (UNC Charlotte)
 - Mansi Reddy Panaganti (UNC Charlotte)
 - Indu Radha Chinta (UNC Charlotte)
 - Devi Priya Guduri (UNC Charlotte)
-- Sucharitha Reddy Tiyyagura (UNC Charlotte)
 - John Martin (Premier, Inc.)
 - Michael Korvink (Premier, Inc.)
 - Laura H. Gunn (UNC Charlotte, Imperial College London)
