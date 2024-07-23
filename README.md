@@ -7,7 +7,7 @@ Medical coding impacts patient care quality, payor reimbursement, and system rel
 - Developed logistic regression models using patient and facility characteristics to explain the coding specificity of principal and secondary diagnoses of dementia.
 - Produced a two-step approach allowing for flexible clustering of patient-level outcomes.
 - Identified facilities that over- or under-specify dementia diagnoses against healthcare industry standards.
-# Methodology
+# Methodology 
 The study uses de-identified data sourced and provided by Premier, Inc.'s private database, consisting of nearly 500,000 unique inpatient hospitalization records of individuals diagnosed with dementia and discharged in 2022. Detailed statistical analyses were conducted to identify associations between patient- and facility-level characteristics and the specificity of dementia diagnoses.
 
 # License
