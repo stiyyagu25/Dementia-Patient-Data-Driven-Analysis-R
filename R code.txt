@@ -1,0 +1,1985 @@
+#############################################################################################################################
+## Step 1: Access the Capstone Project Space in Posit/RStudio Cloud and Familiarize Yourself with RStudio Project Content  ##
+#############################################################################################################################
+# All students should now have a Posit Cloud free account. We will link your accounts to our capstone account space where you can access 
+# the capstone data and project.
+#
+# Once the accounts have been linked, then go to "Fall 2023 Capstone" on the top panel of your screen in Posit Cloud.
+# Click on "Project 1", which will be the project for our course.
+# You will see 4 windows opening:
+# A. Top left window: 		This window contains the editor of the code that we will be writing to address the questions from our community partner/client. 
+#							Think of it as a Notepad where you write the code that you will be running multiple times throughout the semester.
+# B. Bottom left window: 	This window contains the console, or location where the code will be executed/run. This window also returns the results 
+#							from running the aforementioned programming/code (or any other code that you type in the window).
+# C. Top right window: 		This window contains multiple components across 4 different tabs. The ones relevant to this project are:
+# 			Environment: 	This tab contains information about the different data objects we will create. For example, we may create a 
+#							new object called DATA by reading the data from a dataset. This window provides summary information about these
+#							objects, such as their dimensions. 
+#			History:		History of commands you have run. This can be useful if you want to re-run some of the previous commands if Those
+#							are not available in the top-left window (or if you have already modified them in that window)
+# D. Bottom right window: 	This window contains multiple sources of information across 6 tabs. These are the most important tabs that we will be using:
+#			Files: 			A list of files available during the project, including files of summary results and figures that we will create. When
+#							you create a new file, such as files with numerical results or figures, they will be stored here. Note that this window
+#							allows you to upload or download files. However, remember that you signed a confidentiality agreement and cannot
+#							download any data files from the cloud. You can, though, download summary results or figure files for the purpose of writing
+#							the manuscript.
+#			Plots:			When you produce figures/plots, they will be visible in this tab. You can export them to a file directly through
+#							code or via the "Export" function available in this tab. Note that they should always be saved as images, rather than
+#							as pdfs, since journals generally require the images to be available in standard image formats (i.e., JPEG, PNG, TIFF, etc).
+#			Packages:		Packages are sets of functions written by experts and made available for free to R users. It is common to use Packages
+#							for the more non-standard calculations or graphical visualizations. We will be using some R packages throughout this
+#							course. This tab lists the packages available. It includes both those that are readily available from Posit and those
+#							that we may download/install throughout the semester.
+#			Help:			This window will provide information on request regarding commands in R. This is done by using the '?' key on your keyboard 
+#							followed by the command about which you seek help. We will go through an example during the class.
+#			Viewer:			This tab will contain tables produced in html format. While those will not be used for the purpose of the manuscript,
+#							you may find them useful in other circumstances, such as quickly viewing a summary of results.
+# Also note that there is a full menu at the top of the project containing multiple options ('File', 'Edit', 'Code', etc.). The most important
+# of these that we will use is 'File' -> 'Save'/'Save As' to save the code when using the RStudio editor (top left window). My advice is to
+# timestamp each version of your code (e.g., 'Capstone Code 8.31.23'). If you make mistakes and need to go back to older versions of your own code, then 
+# this is facilitated by creating multiple versions along the way. This is oftentimes known as version control in a corporate environment, and we 
+# can do this by saving timestamped versions as we work through the project.
+
+# [SEE VISUAL APPENDIX FOR IMAGES OF THESE STEPS]
+
+#############################################
+## Step 2: Select the Editor for Your Code ##
+#############################################
+# While you can code directly in the editor in Posit or RStudio Cloud (top-left panel when you open the project), you can also use a 
+# different editor for your code.
+# If you prefer a different editor that you can install locally on your computer, for example, to work offline when you are not connected
+# to Posit Cloud, then I recommend the Notepad++ editor, which also serves to visualize code in other languages (i.e., you can use it to visualize
+# your SAS code, SQL code, etc.).
+# You can download it from https://notepad-plus-plus.org/downloads/v8.5.4/. Note that if you don't have a Windows-based machine, then
+# you will need to use a different editor or just use the editor in Posit/RStudio Cloud. The editor will have no impact on the end result.
+# It's simply a visualization tool for your own code - to help you write and read the code by depicting in different colors the different types of
+# commands/functions/comments/etc. 
+# If you download Notepad++, then you can open it and select the coding language in which your code will be written. 
+# This is done from the menu at the top by clicking 'Language' -> 'R' -> 'R'. 
+# Note that other languages are possible, such as SQL or Python. However, both our community partner/client and I code in R, and our DUA specifically
+# states that we must perform the work for this capstone project in R (i.e., RStudio/Posit Cloud).
+# Finally, note that I will be writing code in a form that is equivalent to other languages (R, C++, Python, etc.). While R has more 
+# efficient functions to perform some of the calculations demonstrated throughout the course (e.g., those provided in the tidyverse package, 
+# with which many of you may already be familiar), I provide more step-by-step coding here for those who are not (as) familiar with R or coding 
+# more generally. This step-by-step coding will also help those of you who may be more familiar with coding in other languages (i.e., C or JAVA).
+
+# [SEE VISUAL APPENDIX FOR IMAGES OF THESE STEPS]
+
+##############################################################
+## Step 3: Install All the R Packages Needed for the Project #
+##############################################################
+
+# An R package is a set of functions in R created by experts that provide (often complex) calculations/visualizations. While R contains a 
+# set of functions already built-in, others have been created over time to perform more novel calculations or visualizations. These newer ones are
+# not readily available and need to be installed separately as packages.
+# Packages are installed by using the install.packages command, with a single argument that is the name of the package. 
+
+# How do you know which package(s) you will need? It's oftentimes based on your own analytical or visualization needs. For example, we
+# will need to create professional-looking summary/descriptive statistics tables. We can search for resources in R related to this. We can
+# find that the 'vtable' package in R meets our needs for such tables. The next step is to install this package and start using it for the project.
+
+# While we may not know which/all packages that we will need at the beginning of the project, it makes sense to accumulate all calls to install.packages 
+# at the beginning of the code, so that they are only installed once and you can re-run your code without re-installation. Otherwise, if you place 
+# them in the middle of/throughout your code, then you run the risk of reinstalling the packages multiple times. While this is not a problem per se, it 
+# can slow down the code/processing. Note, however, that in some instances the code within these packages may be updated over time. Therefore, it may be 
+# useful to only install them once at the top of your code to avoid any issues with code not being 'backwards compatible'.
+
+install.packages("readr")		# Package used to read datasets in different formats into R
+install.packages("questionr")	# Package used to calculate odds ratios (ORs) - we may or may not use it, as we may use something different for ORs
+install.packages("stringr")		# Package used to manipulate strings of characters, such as extracting substrings/components of strings
+install.packages("vtable")		# Package used to create and visualize professional-looking tables of results
+install.packages("ggplot2")		# Package used for a large number of high-quality visualizations
+install.packages("usmap")		# Package used as the template for spatial visualizations of US states
+install.packages("pROC")		# Package used to calculate the area under the curve (AUC) for logistic regression to asses the model fit to the data
+install.packages("poisbinom")	# Package used to calculate facility-specific metrics for our project
+install.packages("plyr")		# Package used to map values to descriptions (function mapvalues)
+
+# The next step is to upload the libraries contained within these packages. While we have installed the packages, they are just stored but not 
+
+library("readr")
+library("questionr")
+library("stringr")
+library("vtable")
+library("ggplot2")
+library("usmap")
+library("pROC")
+library("poisbinom")
+library("plyr")
+
+# At this point, you can use any of the functions contained in these packages.
+
+# If you receive a message indicating 'command not found', then the most likely reason is that a package has not been installed and/or loaded.
+# You can look for the function and the corresponding package where it belongs, and install/load these packages. For example, say that you 
+# use the command ggplot() but receive a 'command not found' message. Then, you can find which package contains that function and install it (ggplot2).
+# There is no problem uploading more packages than you use in a project, but you need to have all packages that are used within the project.
+
+# Most packages include a comprehensive description of the contents, including examples of how to use the commands included within them. For
+# example, you can see the content of the package 'questionr' in https://cran.r-project.org/web/packages/questionr/index.html by clicking on 
+# questionr.pdf (i.e., the Reference Manual under the Documentation section on this website). Almost all packages in R will be stored in the 
+# CRAN library and will have information available in a similar format, including the documentation. Also note that they include the authors of the 
+# package, which are oftentimes well-respected faculty in academia around the world. This package, for example, was created by Julien Barnier from 
+# the French National Centre for Scientific Research (Centre National de la Recherche Scientifique (CNRS) in Paris, France).
+
+##################################
+## Step 4: Understand Your Data ##
+##################################
+
+# In most real-world data and analysis projects, you will be responsible or co-responsible for preparing the data through queries from databases or
+# by combining multiple sources of data. However, due to confidentiality requirements and due to the sensitive nature of the information in
+# the Premier database, our community partner/client has extracted the data based on prefiltered variables that we identified for use in this
+# capstone project. Even though our community partner/client has extracted the data, it does not mean that there is no work still to be done to get 
+# the data in a format that is ready for analysis. Thus, we will cover this below.
+
+# The datasets are available on the bottom right of the Posit.cloud project. Note that there are 5 datasets available.
+# In this course, we will be focusing on two datasets in TSV (Tab Separated Values) format, one such dataset for each team:
+# Team Dementia: You will be using the 'fall_2023_capstone_dementia_v2.tsv' dataset.
+# Team Depression: You will be using the 'fall_2023_capstone_depression_v2.tsv' dataset.
+
+# Both datasets contain the same variables in the same order. This is useful because we will be using the same code (with minor modifications) for 
+# both team projects. When I go through and explain the code throughout the class, and the steps needed for the analysis, please note that the code 
+# used will be the same for both teams, however the code identifying the datasets will obviously need modifying. 
+
+#####
+##### 4.1: Read the data
+#####
+
+# We can read the data using the 'read_delim' function. In order to learn about any function, recall that you can type '?' with the function name 
+# immediately following.
+# In the console, type: '?read_delim' to learn more about the 'read_delim' function we will be using.
+# In this example, the package needed is 'readr' and the function is 'read_delim'.
+
+# Using a tab delimeter ("\t"), we can use 'read_delim' to read the data contained in the corresponding file.
+# We will store the content of the team's dataset in the object 'DATA', which will be two dimensional, with rows 
+# storing each of the patient-visits and columns storing the variables/features within that patient-visit.
+
+# Throughout this project you will see the command 'gc()' located in random places. This command means 'garbage collection', and it is used
+# to clean up the memory. While this should be happening automatically in Posit Cloud, I have noticed that it is not the case. Placing this
+# command at multiple locations throughout the code ensures that garbage is not accumulated. Garbage relates to pieces of temporary information
+# that are no longer in use but for which space is allocated. If too much garbage accumulates, then there is the risk that the code/project crashes.
+# This is likely to happen without these calls to 'gc()'.
+
+gc()
+
+# In order to read the corresponding field for your team, make sure that you change the following line to match your team's dataset:
+
+TEAM="Depression" # Replace this with TEAM="Dementia" if you want to run the code for Team Dementia
+
+# Based on the choice above, we will now store your team's dataset in the object 'DATA':
+
+if (TEAM=="Dementia"){DATA <- read.delim("data/fall_2023_capstone_dementia_v2.tsv", sep = "\t")}
+if (TEAM=="Depression"){DATA <- read.delim("data/fall_2023_capstone_depression_v3.tsv", sep = "\t")} 
+
+# It is common to code the data with rows representing observations, or patients, and columns representing variables, or features, of that
+# patient. In our case, our community partner/client prepared the data so that rows represent patient-visits and columns represent variables, 
+# or features, of these patient-visits, such as characteristics of the patient or the hospital/facility where the patient attended.
+
+# We will use the word 'feature' and 'variable' interchangeably in this course. Note that 'variable' is more often used by statisticians, while
+# 'feature' is more often used by computer/data scientists (e.g., our community partner/client, Mike Korvink, will oftentimes say 'features', 
+# which simply refers to variables). 
+# Since you will work with both types of scientists, it is important to become acquainted with both terms.
+# As a data analyst/scientist, there are some data characteristics you should aim to understand:
+# 	4.2. What are the variable names and how many variables are available?
+# 	4.3. What do the variables represent? (i.e., what health characteristics are expressed in these variables)
+# 	4.4. What variable types are they? (i.e., continuous, binary, categorical, etc.)
+# 	4.5. How are the variables coded? (i.e., what categories are possible, in what unit is the variable expressed, etc.)
+
+#####
+##### 4.2: What are the variable names and how many variables are available? 
+#####
+
+# The command colnames(objectname) will provide the names of the columns in the object 'objectname' (in our case, the object name is 'DATA'). 
+# Recall from above that you can learn about commands by using the '?' symbol in the following way:
+
+colnames(DATA)
+?colnames
+
+# Remember that our community partner/client provided us the datasets with the same variable names and in the same order. This is why the code 
+# I am showing you will work for both datasets.
+
+# All variables are coded with lower-cased names except for one (i.e., length_of_stay). It may be simpler to code all variables with 
+# lower-cased names to reduce the chance of error. You can do this by using the 'tolower' function.
+# The right-hand side of the next command creates a vector of column names of DATA transformed to lower-cases, and assigns that vector
+# to the column names of the original DATA object. Hence, the new column names of the DATA object are the same as the old ones but all in lower case.
+
+colnames(DATA) = tolower(colnames(DATA))
+colnames(DATA)
+
+# Note that variable names are specified without spaces, as spaces are not allowed for variable names in R and many other languages.
+
+# The following command provides us with the dimension of our dataset, with the first number representing the number of rows and the second
+# number representing the number of columns.
+
+dim(DATA)
+
+# Q: How many patient-visits (i.e., rows) do we have in our Depression and Dementia datasets?
+# A: 1,096,456 patient-visits in the Depression data and 556,241 patient-visits in the Dementia data. 
+# Q: How many variables (i.e., columns) have we been provided about each patient-visit?
+# A: 34. Note that the number of variables is the same whether working with the Dementia or Depression datasets.
+
+#####
+##### 4.3: What do the variables represent?
+#####
+
+# In order to answer this question, we must go back to the data dictionary provided by our community partner/client. This can be found in the slides
+# presented by Mike Korvink, as well as in the Appendix of our DUA (see Canvas for both documents). You can also ask Mike when something may not 
+# be sufficiently clear regarding variable descriptions. For most variables, this information is self-explanatory from the variable name and/or 
+# possible values that the variable can take, as well as the variable description. 
+
+# Variables can be coded in different ways. Some examples of commonly found variable types include:
+#	Numerical continuous or discrete variables: Variables such as age, facility size/bed count, and length of stay are normally coded as 
+# 												numerical variables. However, the data provided to us only has length of stay as numerical 
+#												continuous, with age and facility size/bed count represented as categorical variables.
+# 	Binary variables: Variables such as whether a diagnosis has been coded with specificity can be represented as binary (Yes/No). Note that if
+#					  a binary variable is instead represented as 1/0, then this can be a numerical binary variable.
+#	Categorical ordered variables: In order to maintain data confidentiality, oftentimes variables that are numerical continuous or discrete are
+#								   transformed into categorical ordered variables. For example, we will see that facility size/bed count, which 
+#								   is fully available to our community partner/client, is only provided to us in groups/categories
+#								   (e.g., 101-200, 201-300, etc.). This is done so that it becomes difficult to identify, or backward engineer,
+#								   a facility based on the details provided. These values are naturally ordered in the sense that a value of
+#								   201-300 represents a facility with more beds than one that contains 101-200, even if we don't know the
+#								   exact number of beds that each has.
+#	Categorical unordered variables: Some variables are categorical without a natural ordering, such as the payer for the inpatient stay
+#									 (e.g., Medicaid, Medicare, Self-Pay, etc.). Such variables contain different categories, but 
+#									 categories cannot be compared/ordered nor can they be arranged or plotted in any 'natural' sequential way.
+# R will contain 2 main types of variables: Numerical (which R defines as "integer") and Categorical (which R defines as "character"). 
+# Binary variables can be represented in either form depending on the variable content. 
+# When a binary variable is represented in numerical form, then it will have two values: 0 and 1, with the latter oftentimes representing "Yes".
+# For example, if we define specificity in binary form, we could do so using values "Yes" and "No" or, alternatively, using values 1 and 0, respectively.
+ 
+# We can use the 'class' function in R to extract the type of variable for each of the columns in DATA. This will help us understand what
+# type of variable with which we will be working for each of the 34 variables contained in the DATA object (regardless of whether Depression or 
+# Dementia data is used). Since each of the variables in our dataset will be of different types, we will need to go one by one to understand 
+# how they have been provided to us.
+
+# In R, you can access specific rows or columns of a data matrix by using brackets and a comma separator between the rows selected and the
+# columns selected. For example: 
+
+DATA[1,] 
+
+# DATA[1,] extracts a vector with the first row (i.e., first patient-visit) in DATA and includes all columns (i.e., all variables). 
+# This will be a 34-dimensional vector since there are 34 variables, and it represents the values of each variable corresponding to the 1st patient-visit.
+
+DATA[,1]
+
+# DATA[,1] extracts a vector with the first column (i.e., first variable) in DATA and includes all rows (i.e., all patient-visits).  
+# This will be an N-dimensional vector, where N is the number of patient-visits in your dataset (recall that N will be different between the
+# Depression and Dementia datasets), representing all patient IDs corresponding to each patient-visit. Notice that due to working with such big data, 
+# only an initial subset of values are provided rather than printing all (again, due to the very large size!).
+
+DATA[1,1]
+
+# DATA[1,1] extracts the first row and first column (i.e., a single value). In this case, we would extract the value of the first variable
+# (i.e., patient ID) corresponding to the first patient-visit. This will be a scalar value.
+
+# Similarly, we can extract multiple rows or columns:
+
+DATA[1:3,]
+
+# DATA[1:3,] extracts the first three rows of data (i.e., all the variable values for the first 3 patient-visits). This will be a 3x34 matrix.
+
+DATA[,c(1,5,7)]
+
+# DATA[,c(1,5,7)] extracts all patient-visits for the first, fifth, and seventh columns (i.e., variables) in the dataset. 
+
+DATA[1000:1001,c(2,4)]
+
+# DATA[1000:1001,c(2,4)] extracts for the 1000th and 1001th rows (i.e., the 1000th and 1001st patient-visits) the values for the 2nd (patient_age_group)
+# and 4th (patient_race) columns (i.e., variables).
+
+# When we extract information from a single vector (which will only have one dimension), then we can just specify which element we want
+# to extract within the brackets. Say, for example, that we extract the first column of DATA and store it in a vector called 'first':
+
+first = DATA[,1]
+
+# If we now want to know the second element/value of that vector, then we would do so by either of the following:
+# Extracting it directly from 'first' by selecting the second item/element/value within that vector:
+
+first[2]
+
+# A: A patient ID of 22193 for the Depression data.
+# Or alternatively extracting it from DATA by selecting the second item of the first column within that matrix:
+
+DATA[2,1]
+
+# The same applies to extracting information from summaries. For example, we saw that dim(DATA) provides us with a vector with 2 values,
+# representing the number of rows and the number of columns in DATA. Therefore, we can extract the number of columns in DATA using:
+
+dim(DATA)[2]
+
+# A: 34 variables (both for Depression and Dementia)
+# If we want to identify the type of variable represented by each of the columns, then we need to extract that column and pass it to the function
+# 'class', which will determine the content. For example, class(DATA[,1]) will provide us with the variable type for the 1st variable:
+
+class(DATA[,1]) # Variable 1 is a masked patient key (an *integer* representing a unique identifier/code for each of the 
+				# patients in the dataset - even though this is a numerical variable, the interpretation is as a categorical variable because
+				# patient 2 is not twice that of patient 1). Note that this is provided in coded form to ensure patient confidentiality.
+class(DATA[,2]) # Variable 2 is the age group of the patient (a *character* variable representing age ranges). Note that in most cases you will
+				# have access to age as a numerical variable, but for patient confidentiality reasons we have been provided with this data in ranges.
+				# This is commonly done to ensure that overly-describing each patient visit does not lead to easy identification of any patients, which
+				# is not allowed for HIPPA (Health Insurance Portability & Accountability Act) reasons. 
+				# See https://www.hhs.gov/hipaa/for-professionals/privacy/index.html for more details.
+class(DATA[,3]) # Variable 3 is the sex coded at birth of the participant (a character variable).
+
+# PRACTICE: Perform this step for each variable to become familiar with the variable types. Note that this can be performed one by one
+# or using a for loop and the 'print' function. Here is the structure:
+
+for (i in 1:dim(DATA)[2])
+{
+	print(c(i,class(DATA[,i])))
+}
+
+# The components of the for loop above are as follows:
+# for loop indicating the values of the variable i, which will be looped from 1 until dim(DATA)[2], which, as we saw, is equal to 34 variables.
+# For each value of i, the commands within {} will be performed. In this case, it will print() 2 elements concatenated using the function
+# c(). The 2 values are 'i' representing the column/variable for that iteration of the for loop and the class of the column/variable i. 
+# Note that this command performs three tasks in one. The first one is to calculate the class of the i-th column of DATA. The second task
+# is concatenating that into a vector that will contain as its first element the number i, and its second element the class of the i-th
+# column in DATA. The third task is to print that newly created 2-dimensional vector. We perform these 3 tasks for each of the values
+# of i in a loop. We use print(), which we did not use before, because within for loops R expects it to know that you want to print the
+# contents calculated within that loop.
+
+# When possible, avoid writing repetitive code. We avoided writing 34 instances of class(DATA[,i]) by using a for loop over
+# all possible values of the column i (from 1 to dim(DATA)[2] which is 34). This will not only reduce the number of lines of your code,
+# but more importantly, it will reduce the chance of error. Imagine if you had thousands of variables in your dataset!
+
+########################## END OF WHAT WAS COVERED IN CLASS ON AUGUST 31, 2023 ####################################################################
+
+########################## BEGINNING OF SEPTEMBER 7, 2023 CLASS ###################################################################################
+
+#####
+##### 4.4: How are the variables coded?
+#####
+
+# We have identified the variable types for each of the variables. However, this does not provide us with information about how these
+# variables are coded (i.e., what values the variables can take). For example, we know that the second variable contains the patient_age_group
+# which is provided as a categorical variable. However, we do not know what possible values that variable can take.
+# There are multiple ways to perform this step. For example:
+
+# 1. If we are only interested in the unique categories or values per variable, then we can extract these using the 'unique()' function:
+
+unique(DATA[,2])
+
+# 2. If we are also interested in understanding how many cases/observations/patient-visits we have for each of the values of the variable, then we 
+# can do this using the 'table()' function:
+
+table(DATA[,2])
+
+# 3. Finally, if we want to do the above step in a pre-formatted table across all variables, then we can use a function such as 'sumtable', 
+#	 or simply 'st()' for short. This function prepares a descriptive statistics table across variables and categories within each variable. However, 
+#	 since it is not available in the standard library for R, then we have to install the external library that contains this function. This was done 
+#	 using the install.packages function (to install that library) further above, and then calling the library to be usable in the code using the 
+#	 library(function). 
+#    The library name is 'vtable', and we already loaded it in step 3 above. We pass DATA as the argument, and the function provides a 
+#    professional-looking table in HTML format or a CSV file that we can then use to create a table in Word.
+
+st(DATA) # HTML (HyperText Markup Language) version to visualize it on the screen as a webpage
+st(DATA,file="Descriptive Statistics Table.csv",out="csv") # CSV (Comma Separated Values) version to download it as a file
+
+# Upon running these commands, you will see a table appear on the bottom-right of your screen (using the first command above), and a new file 
+# available (using the second command above).
+
+# For now, these tables will just be useful to understand the current structure of the data. However, we will perform multiple data transformations
+# that will modify this structure, so we will need to run this command again after we perform these transformations.
+
+###############################################
+## Step 5: Understand the Research Questions ##
+###############################################
+
+#####
+##### 5.1: Identify the variables containing the outcomes.
+#####
+
+# Our data has been pre-filtered by our community partner/client so that it contains all patient-visits with a diagnosis (principal and/or secondary) 
+# of dementia or depression. Therefore, all patients in the respective datasets will be patients with these diseases identified during their 
+# inpatient hospital stays.
+
+# The research question relates to coding specificity. We want to understand the patient- and facility-level factors that are associated with 
+# patient-visits having higher or lower coding specificity in the form in which the diagnoses are provided. Note that we will be looking for 
+# *associations*, which only indicate the variables that occur at the same time as the outcome of interest. Associations do *NOT* imply causation 
+# - i.e., when we find a variable associated with the outcome of interest, we will *NOT* be able to imply a causal relationship between the two.
+
+# Coding specificity relates to whether a specified diagnosis (as opposed to a general, unspecified diagnosis) occurred during the patient-visit.
+# Coding specificity relates to a higher degree of care (i.e., a more thorough/clear identification of conditions/diseases).
+
+# There are 2 types of diagnoses: 
+# Principal/Primary Diagnosis:  The principal diagnosis is the primary reason/diagnosis for the inpatient visit. 
+# (Variables 9 & 10)			There is only 1 principal diagnosis per patient-visit, and it may or may not relate to depression or dementia.
+#								Variable 9 is the principal diagnosis ICD-10 code of the patient-visit.
+#								Variable 10 is the corresponding description/name of the ICD-10 code.
+
+# Specificity of Principal Diagnosis:		If the principal diagnosis relates to dementia or depression within the respective dataset, then the 
+# (Variable 11)								variable specificity_of_principal_diagnosis will contain either Yes (the principal diagnosis was 
+#											specified) or No (the principal diagnosis was not specified). Specificity relates to whether the 
+#											ICD-10 code was vague/general about the disease (i.e., unspecified) or concrete and well-identified 
+#											about the disease (i.e., specified).
+#											If the principal diagnosis does not relate to dementia or depression in the respective datasets, then 
+#											the variable specificity_of_principal_diagnosis will contain N/A, which in this case indicates 
+#											"Not applicable". It does not mean that the specificity is not available, but instead that it does not 
+#											apply to these patient-visits. 
+#											Q: Why would specificity not be applicable to the principal diagnosis of some patient-visits? 
+#											A: Say that a patient is admitted for a stroke. The principal diagnosis will relate to the stroke, but 
+#											the patient may have underlying depression or dementia, which may be identified as a secondary diagnosis, 
+#											but not as part of the principal diagnosis. 	
+
+# Secondary Diagnosis: 			The secondary diagnosis is an additional diagnosis identified during the patient-visit. This may be an underlying 
+#								condition the patient may have. There can be numerous secondary diagnoses identified during patient-visits.
+#								This is different from the principal diagnosis because there is a single principal diagnosis, but there 
+#								could be multiple secondary diagnoses.
+
+# Count of Unspecified Secondary Diagnoses:	For each secondary diagnosis related to dementia or depression in the respective datasets, specificity 
+# (Variable 12)								here relates to how many secondary diagnoses were **unspecified**. Instead of Yes or No to identify specificity, 
+#											we have an actual count of unspecified secondary diagnoses relating to dementia or depression in the 
+#											respective datasets out of the total number of secondary diagnoses (provided in Variable 13, 
+#											count_of_secondary_diagnosis_codes). 
+
+# Count of Secondary Diagnosis Codes:		Total number of secondary diagnosis codes (related or unrelated to depression or dementia, respectively. 
+# (Variable 13)								This variable is continuous.
+
+# Count of Secondary Cohort Diagnosis Codes:	Total number of secondary diagnosis codes related to the disease cohort (depression or dementia, respectively).
+# (Variable 14)
+
+# Note that each patient within our dataset will have at least 1 diagnosis of dementia/depression, whether principal or secondary. It may
+# have both, but there should be no patient-visits without at least one. These are the possible cases:
+# 	Some patient-visits may have only a principal diagnosis related to dementia/depression.
+# 	Some patient-visits may have only one or several secondary diagnoses related to dementia/depression.
+# 	Some patient-visits may have both the principal diagnosis and one or multiple secondary diagnoses related to dementia/depression.
+# No patient-visit in our dataset should have N/A as the specificity of the principal diagnosis and no identified secondary diagnoses related to 
+# dementia/depression.
+
+# Based on the variable names, we can identify 4 variables that relate to the outcomes of interest. These variables are 11-14 in each 
+# dataset. We can first perform a quick descriptive analysis via the 'table' function, which tabulates all possible values of the variable and
+# the frequency with which each value was observed in the dataset. Note that one of the options is useNA="always", which indicates to the 'table'
+# function that we want to see the number of cases of NA, as well (otherwise NAs are ignored by the 'table' function). We can use this to confirm that
+# no N/A values are confused/mixed-up with NA for our principal diagnosis specificity variable.
+
+?table # Remember that using ?function_name provides more details both about the function and its arguments in R.
+table(DATA[,11],useNA="always") # Binary definition of SPECIFICITY of the principal diagnosis. It takes 3 possible values:
+								# Yes=Specified; 
+								# No=Unspecified; 
+								# N/A=The principal diagnosis was not related to the disease cohort (i.e., depression or dementia respectively)
+table(DATA[,12],useNA="always")	# Count of UNSPECIFIED secondary diagnoses related to the disease cohort (i.e., depression or dementia respectively)
+								# Notice some (null) values in this variable, which we will further discuss below.
+table(DATA[,13],useNA="always")	# Count of TOTAL secondary diagnoses (whether related or not to the disease cohort)
+table(DATA[,14],useNA="always")	# Count of TOTAL secondary diagnoses related to the disease cohort (i.e., depression or dementia respectively)
+
+#####
+##### 5.2: Perform an initial check for data quality.
+#####
+
+# There are multiple ways in which we can check the quality of the data, and they will be problem-specific. We will go through some of these
+# in this project, but you should adjust the quality checks to the characteristics of the problem and data with which you are engaged. These checks
+# do not need to be reported in any manuscript/technical report. They are perfomed only to ensure that the data extract has been conducted correctly.
+
+##### 5.2.1: Data quality check #1
+
+# For patient-visits defined as having a specified principal diagnosis, the principal diagnosis code (variable 9 within the dataset) should be one that 
+# demonstrates coding specificity (variable 11). We can check whether this is the case by creating a table of values of the principal diagnosis
+# code (variable 9) or description (variable 10), but only for observations defined as 'specified' (i.e., observations for which column 11 is equal 
+# to "YES" vs. those for which it is equal to "NO").
+
+table(DATA[DATA[,11]=="YES",9])
+table(DATA[DATA[,11]=="NO",9])
+table(DATA[DATA[,11]=="YES",10])
+table(DATA[DATA[,11]=="NO",10])
+
+# This code allows us to investigate how the data was filtered and what ICD-10 codes belong to each group. This is where we should ask our community 
+# partner/client how he performed this split and the reason to consider one group as specified and the other group as unspecified.
+# For the depression team, it appears that our community partner/client may have filtered the data incorrectly, because F32.9 and F33.9 are 
+# both unspecified, but they were grouped separately by column 11 (specificity of principal diagnosis) within version 2 of the dataset (v2). 
+# After checking with our community partner/client, he confirmed that there was an error and he had to perform an updated data extraction for the 
+# depression data. 
+# Therefore, Team Depression should use version 3 (v3) of the depression dataset. 
+
+##### 5.2.2: Data quality check #2
+
+# The total number of secondary diagnoses related to the disease (variable 14) should never be smaller than the count of unspecified 
+# secondary diagnoses related to the disease (variable 12). Why? Because if you have 3 secondary diagnoses related to dementia/depression (variable 14), 
+# then at most 3 can be unspecified (variable 12). If our community partner/client provided a larger number for the unspecified diagnoses related to 
+# the disease cohort, then either variable 12 or variable 14 would be incorrectly defined or filtered. 
+
+# Note that our community partner/client provided variable 12 as the count of unspecified diagnoses, but he is interested in coding *specificity*, 
+# rather than *unspecificity*. Thefore, we will address this issue later in the code.
+
+# We can perform this data quality check/analysis by looking at the joint table of occurrences between these 2 variables:
+
+table(DATA[,12],DATA[,14],useNA="always")
+
+# Note that our community partner/client coded variable 12 as "(null)" when variable 14 was equal to 0. We saw that in the summaries performed in the
+# previous subsection (DATA[,12] contained (null) but DATA[,14] did not). It is common that the data is coded in a way that requires some modification 
+# before the analysis. We will want this variable to be equal to 0 in these instances, which is the actual number of unspecified codes.
+# The next command identifies all patient-visits with a (null) value for variable 12: DATA[,12]=="(null)".
+# Then, for these patient-visits, it assigns the value 0 to column 12:
+
+DATA[DATA[,12]=="(null)",12]=0
+
+# This command is equivalent to the following 2 commands:
+
+identifier_of_null_rows= (DATA[,12]=="(null)")
+DATA[identifier_of_null_rows,12]=0
+
+# It is always a healthy exercise to double-check that your computations are performed correctly. We expect that all (null) values in 
+# variable 12 have now been transformed to 0s. Let's check this before we move forward:
+
+table(DATA[,12],useNA="always")	
+
+# We can now perform the intended data quality check. The total number of secondary diagnoses related to the disease cohort (variable 14) 
+# should be larger or equal to the number of such codes that is unspecified (variable 12).
+# Note that some numbers in some variables are provided as strings (in quotes). When/if this happens, we can use the command as.numeric to
+# transform them to numerical values (we will do this in the next command below). 
+
+# A table of the difference between variable 14 and variable 12 should only contain non-negative values in order to pass this data quality check.
+# This would confirm that varible 14 is not smaller than variable 12 for any patient-visit.
+
+table(as.numeric(DATA[,14])-as.numeric(DATA[,12]))
+
+##### 5.2.3: Data quality check #3
+
+# For those with a principal diagnosis not related to the disease (i.e., patient-visits with N/A as the value in variable 11), there should be 
+# at least one secondary diagnosis related to the disease.
+# Why? Because otherwise that patient-visit should not belong in the dataset. The cohort is defined as those with at least one diagnosis, 
+# whether principal or secondary, of the disease cohort of interest (depression or dementia). 
+# We can test that every patient-visit has at least 1 diagnosis related to the disease (depression or dementia respectively) by first selecting 
+# all patient-visits for which there was no principal diagnosis of the disease (DATA[,11]=="N/A") and tabulate all values of DATA[,14]
+# (number of secondary diagnoses related to the disease). In this table, there should be no values of 0. Any value of 0 would indicate that there 
+# was no principal nor secondary diagnosis related to the disease cohort, and, therefore that the cohort was not extracted correctly. Note that we 
+# perform this calculation in a similar way as we did before, by selecting the patient-visits with N/A in column 11 (creating a vector of TRUE/FALSE 
+# for these patient-visits, and then, among those for whom the value is TRUE, tabulating these patient-visits by variable 14.
+
+table(DATA[DATA[,11]=="N/A",14]) # There are no cases of 0 secondary diagnoses of the disease when the principal diagnosis is not 
+								 # related to the disease (dementia or depression).
+
+##### 5.2.4: Data quality check #4
+
+# One more check we can perform is to ensure that the total number of secondary diagnoses related to dementia/depression is not a larger
+# count than the total number of secondary diagnoses across diseases. We can tabulate this easily as the difference between the 2 counts,
+# which should be non-negative (it could be 0, but not less than 0).
+
+table(as.numeric(DATA[,13])-as.numeric(DATA[,14]))	
+
+# The variables containing the outcome information look correct, so we can proceed to the next step.
+
+#################################################################
+## Step 6: Prepare Your Data to Address the Research Questions ##
+#################################################################
+
+gc()
+
+# We need to differentiate between the response, or outcome, variable(s) and the explanatory, or covariate, variables that we will use in the analysis. 
+# The response, or outcome, variable(s) is/are the variable(s) that we will try to understand/explain by using some of the remaining 
+# variables provided by our community partner/client, which are oftentimes called explanatory variables, covariates, or features. 
+# Our project contains the following groups of variables:
+# 1. Response/Outcome variables: 11-12, with consideration to variables 13-14 for assessing quality checks 
+# 2. Patient- or Patient-visit related variables: 1-10 and 15-25 (recall that our community partner/client discussed the AHRQ variable as county-specific)
+# 3. Facility-related variables: 26-34
+
+# The next step is to clean the data and collapse/group categories of variables where appropriate. You will want to collapse/group 
+# categories of variables when there are small counts or the meaning of the categories is almost equivalent. This is also an opportunity 
+# to understand the large number of problems that you can experience with real-world (and messy) big data. 
+# Going variable by variable will provide you with a sense of the toolkit you need to develop for preparing the data for analysis.
+
+#####
+##### 6.1: Outcome Variables:
+#####
+
+# We already checked and cleaned this set of variables in Step 5. We will further prepare these variables for analysis later, since we will 
+# define 2 distinct research questions based on the outcome information we were provided. We will also perform some additional variable 
+# transformations to align our data with these research questions.
+
+#####
+##### 6.2: Patient- or Patient-Visit Related Variables:
+#####
+
+# This step can be performed in substantially more efficient ways using tidyverse and other object-oriented programming. However, for those
+# with less experience in R, it may be useful to see the detail of these steps, as they are extremely relevant when preparing your data for
+# analyses and visualizations. It is common to underestimate the amount of work and expertise that it takes to prepare the data so that it
+# meaningfully addresses the research questions. Oftentimes, data analysts/scientists 'dump' the data into models without proper cleaning
+# or care, resulting in models that are sometimes misspecified or over-parametrized (i.e., having excessive numbers of variables when many
+# of them are not necessary), thus reducing the power of their analysis.
+
+# Variable 1: 	Masked Patient Surrogate Key. We will not be using this variable. In some cases, we may want to use it, such as when we have
+# 				repeated observations per patient (i.e., multiple visits for each patient). However, in our datasets, we only have 1 visit  
+#				per patient according to our community partner/client. How can we double-check that this is the case? If we only have 1 
+#				patient-visit per patient, then we can create a frequency table for this variable, and the maximum number of cases for any given 
+#				patient in that table should be exactly equal to 1. This is performed in the next line of code.
+#				We will not be using this variable, since it will contain no relevant information about each patient-visit because each 
+#				patient-visit contains a single, unique identifier (i.e., there are no commonalities from which to learn across patient-visits
+#				that pertain to this variable).
+
+max(table(DATA[,1])) # This provides the maximum number of patient-visits for any given patient in the dataset.
+
+# Variable 2: 	Patient Age Group: Both datasets relate to diseases (dementia & depression) that are uncommon among subgroups of very low 
+#				ages. Therefore, it makes sense	to collapse some of the age groups together and potentially rename some of the ones provided 
+#				by our community partner/client. When we have few observations for any category, it is difficult to perform inference on them, 
+#				therefore it makes more sense to group them.
+
+table(DATA[,2])
+
+#				However, note that category collapsing/grouping will be different by disease cohort/dataset, since we will have much fewer individuals 
+#				with dementia in the lower age categories than we do in the depression cohort (where adolescents and young adults may already experience
+#				depression, whereas they are substantially less likely to experience dementia).
+
+# For Team Dementia, the categories will be:
+#				"0 - 44" - Note that there are very few cases of dementia among those with ages <45, so it is reasonable to group all
+#				these categories together. It would be very difficult to learn about specificity among groups with very small counts. Plus, cases 
+#				with dementia among younger age groups are likely to be treated with similar care given the rarity of such cases.
+#				Since we will be interested in the specificity outcome of the principal diagnosis, then we can further explore age for those with a
+#				principal diagnosis of dementia (whether specified or unspecified) to further justify grouping ages 0-44 since there are such few counts:
+
+table(DATA[DATA[,11]!="N/A",2])
+
+#				Categories from "45 - 54" to "80 - 84" will remain as they are.		
+#				"OVER 84" will be coded as "85+" so that all categories keep the order when sorted alphabetically.
+#				Even if we did not observe any values of UNDER 1 or 1 - 4, it is good practice to account for all possible values you could 
+#				have observed in this data. Why? Because if the dataset changes in the future, then you want your code to be robust to these 
+#				changes (e.g., imagine that in the future there is one patient aged <5 years old. By considering these categories now, then our code 
+#				remains robust (i.e., the program will run and consider all patient-visits) should such changes occur. You would normally 
+#				know all possible categories from variables by looking at the data dictionary for the dataset (though note that we were not 
+#				provided with a data dictionary by our community partner/client).
+
+if (TEAM=="Dementia")
+{
+	# Rename the patient-visits of ages "OVER 84" to "85+":
+	
+	DATA[DATA[,2]=="OVER 84",2]="85+"
+	
+	# Assign categories "1 - 4", "5 - 9",..., "35 - 44" to have a value of "0-44". Note that I am using "|", which 
+	# represents "or" in R. We are creating a vector of TRUE/FALSE that, for each patient-visit, will indicate whether the patient age
+	# falls into one of these categories (TRUE) or does not (FALSE). Then, for the patient-visits where it falls into one of these
+	# categories, then we assign the value "0 - 44" to variable 2 instead of the existing values. Also, note that we could have added here
+	# the case "Not Given" as a possibility given that we now know that it can be a possible case (see the example below for the Depression data). 
+	# Though, we can leave it out, since our data does not contain "Not Given".
+	
+	DATA[DATA[,2]=="UNDER 1" | DATA[,2]=="1 - 4" | DATA[,2]=="5 - 9" | DATA[,2]=="10 - 14" | DATA[,2]=="15 - 19" | DATA[,2]=="20 - 24" | 
+		DATA[,2]=="25 - 34" | DATA[,2]=="35 - 44",2] = "0 - 44"
+	
+	#  Again, we test that the changes we performed were done correctly and that the resulting variable 2 contains the desired categories:
+	
+	table(DATA[,2]) 
+}
+
+# For Team Depression, the categories will be: 
+#				"0 - 9 & Other" (0-9 plus the single observation of "Not Given").
+#				Categories from "10 - 14" to "80 - 84" will remain as they are.
+#				"OVER 84" will be coded as "85+" so that all categories keep the order when sorted alphabetically.
+#				We would normally not group "Not given" with others, but since we have such a few number of counts, it would make little 
+#				difference as to the group where we assign them.
+
+if (TEAM=="Depression")
+{
+	# Rename patient-visits of ages "OVER 84" to "85+":
+	
+	DATA[DATA[,2]=="OVER 84",2]="85+"
+	
+	# Assign categories "1 - 4", "5 - 9", "Not Given", and "UNDER 1" to have a value of "0-9 & Other". Note that I am using "|", which 
+	# represents "or" in R. We are creating a vector of TRUE/FALSE that, for each patient-visit, will indicate whether the patient age
+	# falls into one of these categories (TRUE) or does not (FALSE). Then, for the patient-visits where it does fall into one of these
+	# categories, we assign the value "0-9 & Other" to variable 2 instead of the existing values.
+	
+	DATA[DATA[,2]=="1 - 4" | DATA[,2]=="5 - 9" | DATA[,2]=="Not Given" | DATA[,2]=="UNDER 1",2] = "0-9"
+	
+	#  Again, we test that the changes we made were performed correctly and that the resulting variable 2 contains the desired categories:
+	##### Notice that we modified the age collapsed categories from '0-9 & Other' to simply '0-9'. This is because there was only 1 person 
+	##### who had a 'Not Given' age, and this person was later removed because they also had an 'Unknown' sex (see next variable below).
+	
+	table(DATA[,2]) 
+}
+
+gc()
+
+# Variable 3: Patient Sex: Since we have very few "Unknown" observations of patient_sex, then we will remove these from the dataset for both cohorts:
+
+table(DATA[,3])
+DATA = DATA[DATA[,3]!="Unknown",] # Note that this creates a vector of TRUE/FALSE for whether the row has patient_sex is different from "Unknown" 
+								  #	which is represented by DATA[,3]!="Unknown" (!= means 'different from, or not equal to' in R) and we keep the 
+								  # patient-visits for which the variable is different (TRUE) while discarding those for which it is equal (FALSE). 
+								  # We keep all columns, which is represented by empty content after the comma and before the bracket.
+table(DATA[,3]) # Again, let's check that our code performed the correct task.
+
+# Variable 4:   Patient Race: We will keep this variable as-is, since we have large numbers of observations for each category, including 
+#				those "UNABLE TO DETERMINE", which is equivalent to N/A. Note that N/A values in this case could be due to 
+#				lack of recording of that variable by the local	facilities but also to people not wanting to disclose it. In either case,
+#				there could be underlying common reasons for this choice, which could help identify whether these patient-visits have
+#				larger odds of lack of specificity (e.g., maybe clinicians of individuals for whom race was not recorded show a general lack of care 
+#				about good recording standards, including specificity of diagnoses).
+
+table(DATA[,4])
+
+# Variable 5: 	Length of Stay: This is a numerical (continuous) variable, and we will keep it as such for now. Note that this variable is likely to be 
+#				right-skewed. Why? Because you are more likely to have many patient-visits with lengths of a few days and just a handful of 
+#				patient-visits with enough complications to warrant a (very) lengthy stay. While the variable seems to be correctly coded, 
+#				we will consider a variable transformation later when we use this variable for the analysis.
+#				A quality data check we can perform on this variable is ensuring that the minimum value for this variable is 1, since all 
+#				patient-visits should have been filtered for having an inpatient stay in the hospital (i.e., at least a stay of 1 day).
+
+min(DATA[,5])
+
+# Variable 6:	Primary Payer of the Inpatient Stay: Most categories contain sufficient numbers of observations. However, there are 2 
+#				very similar categories ("CHARITY" and "INDIGENT") with lower counts than the other categories. We can collapse these 2 into a 
+#				combined category named "CHARITY/INDIGENT". As we did before, we identify all cases where the variable has either of the
+#				2 values, and replace all such patient-visits' 6th column value with "CHARITY/INDIGENT".
+
+table(DATA[,6])
+DATA[DATA[,6]=="CHARITY" | DATA[,6]=="INDIGENT",6]="CHARITY/INDIGENT"
+table(DATA[,6])
+
+# Variable 7:	Patient Point of Origin: Upon consulting with our community partner/client, some of these categories could be the result of miscoding. 
+#				For example, sometimes coding is done for the child during a delivery, but it is assigned to the mother. This could explain 
+#				codes such as "Born Outside of this Hospital" for dementia/depression patients, which would be very inappropriate (most
+#				dementia patients will have been born outside the inpatient treatment hospital, yet only a handful are coded that way). 
+#				Because of this possible miscoding, we can group these 'odd' categories into a single one that we can call "Other". 
+#				We can also group individuals with substantially lower counts, such as "Xfer from designated disaster ACS".
+
+table(DATA[,7])
+DATA[DATA[,7]=="Born Inside this Hospital" | DATA[,7]=="Born Outside of this Hospital"| DATA[,7]=="Xfer from designated disaster ACS",7]="Other"
+table(DATA[,7])
+
+# 				Team Depression will notice that there is one additional nuance in this variable. There is a very small number of 
+#				"Information not available" patient-visits, and a large number of "Information Not Available". Sometimes coders do 
+#				not take into account that a category for the variable has already been created, and they create it again with small 
+#				differences. This appears to be the case here, so we can collapse these 2 categories, which contain the same information. 
+#				Since this could have happened also for TEAM Dementia's dataset, then it is OK to run this code on both datasets (though, note that 
+#				for Team Dementia, this next piece of code will not perform any change in your dataset):
+
+DATA[DATA[,7]=="Information not available" | DATA[,7]=="Information Not Available",7]="Information Not Available"
+table(DATA[,7])
+
+# Variable 8:	Patient Discharge Status: This variable contains a large number of categories and some issues that we need to address.
+
+table(DATA[,8])
+
+#				Low count variables:	"EXPIRED" across different locations can be collapsed into a single category. Expired means that
+#										the patient passed away. Although the location of expiration may have some relevance, there is also
+#										reason to group them. Why? Because the information content will be small per category,
+#										making it unlikely to obtain any relevant information about each of them (this is called 'power' and
+#										it relates to having sufficient number of cases to be able to extract meaningful inference about the
+#										underlying associations).
+#				Repeated variables:		"Information not available" and "INFORMATION NOT AVAILABLE" (Depression dataset)
+# 				Similar variables:		Those with ACUTE IP RDM, ACUT IP RDM, and ACUTE IP READM relate to acute care hospital inpatient 
+#										readmissions. (Depression dataset)
+
+DATA[DATA[,8]=="EXPIRED AT HOME (FOR HOSPICE CARE)" | DATA[,8]=="EXPIRED IN MEDICAL FACILITY(FOR HOSPICE)" | DATA[,8]=="EXPIRED, PLACE UNKNOWN (FOR HOSPICE)",8]="EXPIRED"
+DATA[DATA[,8]=="Information not available" | DATA[,8]=="INFORMATION NOT AVAILABLE",8]="INFORMATION NOT AVAILABLE"
+table(DATA[,8])
+
+# 				Depression dataset: For each of the values referring to acute inpatient readmissions, we could code each of the cases in a similar 
+#				fashion as we did above, or, alternatively, explore whether there is a function that allows us to do this more efficiently. 
+#				Notice that there are commonalities in the categories, such as looking at all cases with "ACUT IP" or "ACUTE IP" in the name. 
+#				Ideally we would detect such commonalities with a data dictionary, but, again this was not provided by the community partner/client, so we 
+#				must assess this more manually.	There is one in the library	'stringr', which allows us to detect (TRUE/FALSE) whether a string 
+#				appears within each element of a vector. For example, str_detect(DATA[,8],"ACUTE IP RDM") will return TRUE for the patient-visits
+#				where that string is part of variable 8, and FALSE for the patient-visits where that string is not present in variable 8. Then,
+#				we can identify all such instances where one of them is present, and replace the value in variable 8 with a new string,
+#				which in this case is "ACUTE INPATIENT READMISSION". This new string will represent acute inpatient readmissions for any cause.
+
+DATA[str_detect(DATA[,8],"ACUTE IP RDM") | str_detect(DATA[,8],"ACUT IP RDM") | str_detect(DATA[,8],"ACUTE IP READM"),8]="ACUTE INPATIENT READMISSION"
+table(DATA[,8])
+
+# Variables 9-10: 	Primary Diagnosis Code & Description: It can be tempting to use the primary diagnosis codes in the analysis, since they have not 
+#					been identified as outcome variables. However, we must consider whether they are a byproduct of the outcome variables. For example,
+#					for Team Dementia, one of the categories for variable 10 is "ATHSCL HRT DZ NTV COR ART UNSTB AP" (i.e., you can use this code:
+#					table(DATA[DATA[,10]=="ATHSCL HRT DZ NTV COR ART UNSTB AP",11]) to tabulate the specificity of the principal diagnosis among those
+#					with a principal diagnosis of "ATHSCL HRT DZ NTV COR ART UNSTB AP".
+#					Specificity for individuals with such value would be always N/A because their principal diagnosis was related to 
+#					atherosclerosis rather than dementia. An explanatory variable has to meet the criteria that its value (or category)
+#					is not required to be known	in order to be able to define the outcome (i.e., specificity of the principal diagnosis, in our case). 
+#					Variables 9 and 10 are, thus, part of the definition of the outcome. These variables, therefore, will not be used directly in our
+#					analysis as either covariates or outcomes.
+
+#					One piece of information that we can extract from these variables is the ICD-10 codes for which our primary outcome is
+#					defined as 'unspecified'. We can do this by extracting the possible values that variables 9 and 10 have when the
+#					specificity of the primary outcome is defined as "NO" (i.e., unspecified). Why? Because in order to have a "NO" for the specificity 
+#					of the primary outcome, the primary outcome must have been related to the disease cohort (dementia or depression, respectively), 
+#					and it must have fallen under one of the ICD-10 codes defined by our community partner/client as 'unspecified'. We can collect 
+#					all such cases and extract which categories were used by our community partner/client to define non-specificity of our 
+#					primary outcome. This is performed in the second table below for each of the team-specific blocks of code. If you want to know 
+#					which actual ICD-10 codes correspond to these ICD-10 descriptions, then replace column 10 with column 9 in that second table.
+
+length(unique(DATA[,10])) #This will provide the number of unique principal diagnoses.
+
+if (TEAM=="Dementia")
+{
+	table(DATA[DATA[,10]=="ATHSCL HRT DZ NTV COR ART UNSTB AP",11]) # This is just an example.
+	table(DATA[DATA[,11]=="NO",10]) # Out of the thousands of categories for variable 10 (i.e., thousands of principal diagnoses as the reason for 
+									# the patient-visit in the hospital), only a small fraction correspond to those with an unspecified 
+									# principal diagnosis. Hence, the value of the outcome variable is directly related to these variables, which
+									# cannot be predictors/covariates (i.e., we cannot use the principal diagnosis to help us understand the same variable).
+}
+
+# 					Similarly, Team Depression can check that, among individuals diagnosed with "ATHSCL,NTV ART,EXTRM W RST PN L LG" (which is
+#					a principal diagnosis of atherosclerosis with some additional diagnoses around it, all patient-visits share the same value 
+#					of the primary outcome specificity, which is N/A.
+
+if (TEAM=="Depression")
+{
+	table(DATA[DATA[,10]=="ATHSCL,NTV ART,EXTRM W RST PN L LG",11]) # Again, this is just an example.
+	table(DATA[DATA[,11]=="NO",10]) # Out of the thousands of categories for variable 10 (i.e., thousands of principal diagnoses as the reason for 
+									# the patient-visit in the hospital), less than 10 of these correspond to individuals with an unspecified 
+									# principal diagnosis. Hence, the value of the outcome variable is directly related to these variables, which
+									# cannot be predictors/covariates (i.e., we cannot use the principal diagnosis to help us understand the very 
+									# same variable).
+}
+
+# Variables 11-14:	These are the variables we will use to construct our outcomes of interest for our research questions, and we have already gone 
+#					through them further above when discussing principal and secondary diagnoses and coding specificity. We will perform further 
+#					data processing later with these variables, if needed.
+
+# Variable 15:		Number of Procedure Codes: This is a continuous variable and could help explain the outcome. For example, if a patient has a large 
+#					number of procedures, then this may indicate that there is a complexity in their health condition(s)/status that may translate to 
+#					lower care attention/accuracy to identifying/defining diagnoses. Alternatively, a large number of procedures could, again, imply 
+#					higher complexity but instead with greater care attention/accuracy to identifying/defining diagnoses, and therefore greater coding 
+#					specificity. It is unclear as to any possible association in either direction until we perform the analysis. We will not need to 
+#					transform this variable.
+
+# Variable 16: 		ICD-10 Coding Period: The ICD-10 coding period does not need to be modified. The ICD-10 Coding Period relates to how
+#					ICD-10 codes were updated on October 1, 2022, so it provides a flag for such codes, in case they constituted a disruption 
+#					for hospitals and led to higher or lower levels of specificity. Recall that coding periods occur between October 1 of one year 
+#					to September 30 of the following year. Since our data consists of patient discharges in 2022, then there are 2 coding periods within
+#					the data (2022: Oct 1, 2021 - Sep 30, 2022; and 2023: Oct 1, 2022 - Sep 30, 2023).
+
+unique(DATA[,16])
+
+# Recall that our data consists of patient discharges occurring in the 2022 calendar year. Therefore, some patients could have been admitted in 2021
+# and discharged in 2022, depending on their length of stay.
+
+# Variables 17-21:	AHRQ Social Vulnerability Indices: Recall that these Agency for Healthcare Research & Quality (AHRQ) Social Vulnerability Indices 
+#					refer to: 
+#					Socioeconomic Status (Variable 17)
+#					Household Characteristics (Variable 18)
+#					Racial & Ethnic Minority Status (Variable 19)
+#					Housing Type & Transportation (Variable 20)
+#					Overall Vulnerability (Variable 21). 
+#					Values are continuous and range from 0 to 1. 
+#					In some instances, we may want to impute these variables. However, we do not have sufficient computational power to perform this 
+#					imputation step with such a large dataset and limited purchased RAM for this course, so for the purpose of our analysis, we will 
+#					perform a complete case analysis for this variable later on by removing observations with N/As (which are coded as "(null)" in the 
+#					dataset). We will then remove these N/As later in the analysis. 
+
+# 					This code creates a matrix (instead of a vector) of TRUE/FALSE for whether the values across all rows and across columns 17:21 
+#					are equal to "(null)", and then takes the matrix DATA[,17:21] and for each such instance, it sets the value to NA elementwise.
+# 					You could have also performed this code column by column as in previous examples. 
+
+unique(DATA[,16])
+
+# Variable 22:		Covid-19 Indicator (0=No; 1=Yes): No data processing changes are needed for this variable.
+
+# Variables 23-24:	Base MS-DRG Code (variable 23) and Corresponding Description (variable 24): This is a very large list of codes. We could use it 
+#					if we were able to group them in a meaningful way. However, without the domain knowledge that a medical doctor could provide, it 
+#					would be risky for data analysts to do this. For now, we may not use these variables in our analysis.
+
+length(unique(DATA[,24]))
+
+# A good way to understand how many observations we have by category is to use the quantile function. This function breaks the data by frequency. 
+# For example, it would tell us that 25% of categories in this variable have at most X observations:
+
+quantile(table(DATA[,24]))
+
+# Variable 25:		MS-DRG Type: This variable is binary to represent the MS-DRG type ("Medical" or "Surgical"). It relates to the MS-DRG variables 23 & 24,
+#					and it can be used in our analysis. No further data processing/categorization is needed for this variable.
+
+#####
+##### 6.3 Facility-Related Variables:
+#####
+
+# Variable 26:		Facility ID: Facility IDs will be used as part of the analysis. One facility may operate differently from another in 
+#					terms of standards for coding specificity. This could be an important factor to explain variability in our outcome 
+#					variable. Our community partner/client is likely interested in providing a form of ranking of facilities based on the 
+#					coding specificity of facilities' principal and/or secondary diagnoses.
+
+length(unique(DATA[,26]))	# This will tell us the number of facilities represented in the dataset.
+hist(table(DATA[,26]), nclass=50) 	# table(DATA[,26]) provides a frequency table for the number of patient-visits within each facility. Then,
+									# we create a histogram to visualize the number of facilities (frequency, y-axis) by the number of patient-visits
+									# per facility (x-axis). Also, note that 'nclass' defines the width of the bins within the histogram. For example
+									# with the dementia data, just from the histogram, we can see that just over 120 facilities have at most 50 
+									# patient-visits. More generally, as we can see in the histogram, the data is right-skewed, which means that some 
+									# facilities will have very large numbers of patient-visits, while a large number of facilities will have smaller 
+									# numbers of patient-visits. We will not include this figure in the manuscript, but we may consider including it
+									# as part of the supplementary materials.
+									
+# Variables 27-30:	Facility Status with respect to: 
+#					Teaching Status (Variable 27) - No/Yes 
+#					Academic Status (Variable 28) - No/Yes
+#					Urban/Rural Status (Variable 29) - The values are clearly presented as "URBAN" and "RURAL".
+#					Ownership Status (Variable 30) - You can use unique(DATA[,30]) to see the different categories represented in the data.
+
+#					Some of the values within some of these variables are sometimes not available because they have not been coded within the dataset. 
+#					This may occur for newer facilities or facilities that have just been added to the Premier database. However, these facilities could 
+#					possibly share common characteristics (i.e., they may be uncoded because of some commonalities 
+#					such as being very small or not providing sufficient information or being new facilities altogether or new to the Premier database). 
+#					Therefore, all "(null)" values for these variables will be coded as "Not available", indicating that we will estimate parameters for 
+#					these categories. This is different from what we did for Variables 17-21 in which we set null values to NA and then plan to remove NA
+#					values during analysis in order to have a complete case analysis. For those prior variables 17-21, the missing information was the 
+#					patient's social vulnerability index (SVI), rather than a facility-level detail that would normally be available.
+# 					We recode the (null) values in a similar way as we did for the SVI (see explanation above), but instead of using NA, we
+#					will use "Not available". Why? Because later on during analysis we will remove all rows that contain any NA when performing a 
+#					complete case analysis, but we want to keep "Not available" instances as a separate category for variables where such NAs could be 
+#					useful, such as this case with facility status.
+
+DATA[,27:30][DATA[,27:30]=="(null)"]="Not available"
+
+# Variable 31:		Facility Size/Bed Count: Note that this variable was categorized by our community partner/client so that it would be very difficult 
+#					for a researcher to try to identify to which actual hospital/facility the data corresponds. However, if you were working as a data 
+#					scientist at Premier and had access to the full data, then it is likely that you would also have accesss to this variable as a 
+#					continuous form/variable, rather than categorized. This variable does not need any recoding/data processing.
+
+# Variable 32: 		Facility Case Mix Index (CMI): This is an important variable, because it provides very relevant information about the patient cases 
+#					with whom healthcare providers work within that facility. CMI is provided as a continuous variable. There are also some "(null)" 
+#					values that we will first change to NA and then later remove during analysis. While there are a large number of null values (and 
+#					the ideal would be to perform imputation to handle this missing data), we do not have the computational power for this, unfortunately, 
+#					again due to the size of the data and limited purchased RAM for this course. Thus, we will perform a complete case analysis for this 
+#					variable by removing "(null)", or NA, values.
+
+table(DATA[,32])
+DATA[,32][DATA[,32]=="(null)"]=NA
+
+# Variables 33-34:	State Variables: Variable 33 provides the 2-letter state abbreviation, and Variable 34 provides the full state name. Looking at
+#					results by state will be very useful both for the actual numerical analysis and for visualizing results by state on a U.S. map.
+#					States may have different guidelines or standards from other states, or funding may be widely different by state. Such
+#					geographical disparities in coding specificity could be relevant for policy makers. 
+#					Note that NA is coded as value 98 (I confirmed this with our community partner/client), and that the results include not only states, 
+#					but also US territories. For the purpose of our analysis, however, we will focus solely on states (not DC or territories), so we will be 
+#					grouping territories and unknown/NA values into a single group of "NA" to leave the meaning of the variable as a state-only variable. 
+#					Also, we will be using variable 33 (not variable 34), since variable 34 has information already contained in variable 33. There is 
+#					no need to keep both variables in the analysis when the information content is the same between them.
+#					In order to control for all possible categories for this variable, whether observed in this dataset or not, we can use this state 
+#					reference: https://www.faa.gov/air_traffic/publications/atpubs/cnt_html/appendix_a.html
+
+DATA[DATA[,33]=="98" | DATA[,33]=="VI"| DATA[,33]=="PR"| DATA[,33]=="DC"| DATA[,33]=="AS"| DATA[,33]=="GU"| 
+	 DATA[,33]=="MP"| DATA[,33]=="TT" | DATA[,33]=="AE"| DATA[,33]=="AP",33]=NA
+
+
+# Remember that many of these data cleaning/processing commands could be performed more efficiently (though less transparently) using other commands 
+# in R. However, I want to make sure that you understand what is being performed, why it is performed, and how (though, again, there may be more efficient 
+# ways to code to accomplish the 'how' part). 
+
+
+########################## END OF WHAT WAS COVERED IN CLASS ON SEPTEMBER 7, 2023 ####################################################################
+
+########################## BEGINNING OF SEPTEMBER 21, 2023 CLASS ###################################################################################
+
+
+#####
+##### 6.4: Assign Variable Types and Reference Levels
+#####
+
+# Variable Types:
+# Before moving to the analysis step, it is useful to clearly define for R what type of variable (i.e., categorical, numerical) each variable is. 
+# This helps throughout multiple steps, including the construction of descriptive statistics tables using the 'sumtable', or 'st', function(s) that we 
+# introduced earlier. For example, we do not want to use means or standard deviations for variables that, although having a numerical value, do
+# not represent actual numbers, such as facility IDs, which are coded as numerical.
+
+# Also, R does not always recognize the variable type for some of the variables (e.g., age, primary payer, etc.). Try computing a summary statistics 
+# table again prior to defining all variable types and notice that summary statistics are not provided for all variables (e.g., age, primary payer, etc.). 
+
+st(DATA) # Obtaining summary statistics again, just as we did at the beginning.
+
+# Reference Levels:
+# A reference level can be assigned to each categorical variable (note that R also calls categorical variables as 'factor'). 
+# A reference level is the value of the variable against which all calculations will be performed. 
+# This value is commonly chosen in the literature to be the 'most common' category within a categorical variable (i.e., a category with large counts), 
+# or oftentimes a 'benchmark' category that has historically had better health outcomes. This is oftentimes informed by the literature surrounding 
+# that particular variable. Some reference levels are objectively defined with justification from the literature or other clinical/practical meaning, 
+# while others are more subjectively defined, particularly for variables with mixed or inconclusive literature surrounding that variable. However, the 
+# results of the analysis do not change based on the category selected for the reference level. For example, if we use "White" as the reference category 
+# for race, and explore differences between individuals who identify as 
+# "Black" compared with those who identify as "White", then the significance of results will be the same as if we define "Black" as the reference category 
+# and explore differences with those who are "White". If the differences were statistically significant in the former case, then they will also be 
+# significant in the latter case. Therefore, these choices are more relevant for presentation or visualization purposes than as a key piece of the analysis.
+
+gc()
+
+DATA[,1] = as.factor(DATA[,1]) 				# [1] Patient ID: Even though it is numerical, the numbers are not meaningful for the analysis. 
+											# They are simply numerical tags that represent each patient. 
+
+DATA[,2] = as.factor(DATA[,2]) 				# [2] Age: Normally age would be numerical, but our community partner/client provided it as categorical, 
+											# so it is an (ordered) categorical variable & each category will have its own parameter estimate and 
+										# corresponding odds ratio (OR).
+DATA[,2] = relevel(DATA[,2],ref="85+")		# We will define the reference category as patients 85 or older. This means that all ORs for this variable 	
+											# will be calculated as the odds of the outcome (coding specificity) compared to those 85+ years old.
+
+DATA[,3] = as.factor(DATA[,3])				# [3] Sex: This variable is categorical.
+DATA[,3] = relevel(DATA[,3],ref="Female") 	# We will define "Female" as the reference category. You can use "Male" and see that the significance of 
+											# results are equivalent.
+											
+DATA[,4] = as.factor(DATA[,4])				# [4] Race: This variable is categorical.
+DATA[,4] = relevel(DATA[,4],ref="WHITE") 	# We will define "WHITE" as the reference category. This is commonly done in the literature to 
+											# identify/demonstrate potential health disparities by race/ethnicity. 
+											
+DATA[,5] = as.numeric(DATA[,5])				# [5] Length of Stay is numerical continuous. Therefore, it does not need a reference category. By 
+hist(DATA[,5], nclass=50)					# definition, the reference level is zero, and the OR for this variable will represent the increased/og(DATA[,5])					# decreased odds of coding specificity per unit increase in the variable (i.e., per additional day of 
+hist(DATA[,5], nclass=50)					# stay in the hospital). However, since this variable is highly right-skewed (which you can see visually 
+DATA[,5] = l
+											# from a histogram or numerically by comparing the mean and median values), then we will be using a log 
+											# transformation of this variable. You can read more about log-transformations here:
+											# https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9036143/pdf/10.1177_00045632211050531.pdf
+											
+DATA[,6] = as.factor(DATA[,6])				# [6] Primary Payer: This variable is categorical.
+DATA[,6] = relevel(DATA[,6],ref="MEDICARE - TRADITIONAL") # We will define Medicare Traditional as the reference category because it is a likely common 
+											# payer type for older patients, who may also suffer from dementia and/or potentially depression, 
+											# although other reference options are possible.
+											
+DATA[,7] = as.factor(DATA[,7])				# [7] Patient Point of Origin: This variable is categorical. Many/most patients will come from outside
+DATA[,7] = relevel(DATA[,7],ref="Nonhealthcare Facility Point of origin") # a hospital (e.g., their homes), which supports our reference definition here.
+
+DATA[,8] = as.factor(DATA[,8])				# [8] Discharge Status: This variable is categorical.
+DATA[,8] = relevel(DATA[,8],ref="DISCHARGED TO HOME OR SELF CARE") # We can use this option as the reference category for those with 
+											# oftentimes sufficiently good prognosis to be discharged to home or self care rather than to
+											# another facility or needing further treatment.
+											
+DATA[,9] = as.factor(DATA[,9])				# [9] ICD-10 Principal Diagnosis Code is categorical. However, we will not be using it directly within
+											# our analysis.
+
+DATA[,10] = as.factor(DATA[,10])			# [10] ICD-10 Principal Diagnosis Name/Description is categorical. However, we will not be directly using it
+											# in our analysis.
+											
+DATA[DATA[,11]=="NO",11] = 0				# [11] Coding Specificity of Principal Diagnosis: This is an outcome variable for our analysis, so no 
+DATA[DATA[,11]=="YES",11] = 1				# reference levels are used. Since this outcome variable will be used in a logistic regression framework, 
+											# then defining it as 0 (no) vs. 1 (yes) or NA is appropriate (i.e., transforming it to numeric).
+											# A value of 1 will denote that the principal diagnosis is related to dementia or depression, respectively,
+											# and it was specified. Note that the values of variable 11 that are "N/A" are not actual NAs, but 
+											# instead they are cases where the principal diagnosis was not related to the disease cohort.
+											# Therefore, we will keep them coded as-is for now, since we will be removing patient-visits with 
+											# NAs among variables when performing our complete case analyses, but we do not want to remove these N/A 
+											# observations for this variable because the values *are* available, just not applicable. Values coded as 
+											# "N/A" will not be recognized by R as NAs (only those coded as "NA" will be recognized as NA). Therefore, 
+											# when we remove NAs later in our analyses, patient-visits with values of N/A in variable 11 will be 
+											# retained in the dataset. Also, notice that we nei
+											
+DATA[,12] = as.numeric(DATA[,12])			# [12] Count of **Unspecified** Secondary Diagnosis Codes: This is a numerical variable that will be used
+											# for defining another outcome for our analyses. Note that our community partner/client provided this 
+											# variable as the count of unspecified secondary diagnoses, rather than the count of specified secondary 
+											# diagnoses.
+											
+DATA[,13] = as.numeric(DATA[,13])			# [13] Count of Secondary Diagnosis Codes (related or not to the disease cohort): This is a numerical 
+											# variable.
+											
+DATA[,14] = as.numeric(DATA[,14])			# [14] Count of Secondary Diagnosis Codes Related to Disease Cohort: This is a numerical variable that will 
+											# be used for defining another outcome for our analyses.
+
+DATA[,15] = as.numeric(DATA[,15])			# [15] Count of Procedure Codes: This is a numerical variable, so no reference levels are needed.
+
+DATA[,16] = as.factor(DATA[,16])			# [16] ICD-10 Coding Period: Although ICD coding period appears to be numeric, the underlying content is 
+											# a factor (i.e., year=2022 vs. year=2023). This is equivalent to a binary variable, which we can code with
+DATA[,16] = relevel(DATA[,16],ref="2022")	# reference level=2022 (i.e., the 'older' approach to coding), whereas a value of 2023 denotes the updated 
+											# coding period. A significant OR would denote higher/lower (depending on the sign of the corresponding
+											# logistic regression coefficient estimate) odds of specificity under the updated (2023) coding standards 
+											# versus the prior (2022) coding standards.
+											
+DATA[,17] = as.numeric(DATA[,17])			# [17] Social Vulnerability Indices (SVIs) are numerical and will be treated as such in our analyses. 
+											# Socioeconomic Status (Variable 17).		
+											
+DATA[,18] = as.numeric(DATA[,18])			# [18] SVI indices are numerical. Household Characteristics (Variable 18).
+
+DATA[,19] = as.numeric(DATA[,19])			# [19] SVI indices are numerical. Racial & Ethnic Minority Status (Variable 19).
+
+DATA[,20] = as.numeric(DATA[,20])			# [20] SVI indices are numerical. Housing Type & Transportation (Variable 20)
+
+DATA[,21] = as.numeric(DATA[,21])			# [21] SVI indices are numerical. Overall Vulnerability (Variable 21). 
+
+DATA[,22] = as.factor(DATA[,22])			# [22] COVID-19 Indicator: Indicator variables are 2-category factor variables (No/Yes is equivalent to 0/1).
+DATA[,22] = relevel(DATA[,22],ref="0")		# We will define the reference as the patient not experiencing COVID-19 during the visit (No/0). This 
+											# variable was included in case patients with COVID-19 experienced different levels of coding specificity 
+											# of their dementia/depression diagnoses if they were also being treated for COVID-19.
+											
+DATA[,23] = as.factor(DATA[,23])			# [23] Base MS-DRG Code: We will not plan to use this variable in our analysis. Although the values are 
+											# numerical, they are factor variables. We do not have to convert it to factor, though it is good practice 
+											# to do so in case our community partner/client needs any additional analyses that involve this variable 
+											# (or other variables that we are initially not planning to use).
+
+DATA[,24] = as.factor(DATA[,24])			# [24] Base MS-DRG Description: This is a categorical variable, though please see the explanation directly above.
+
+DATA[,25] = as.factor(DATA[,25])			# [25] MS-DRG Type (Medical or Surgical): This is a categorical variable.
+DATA[,25] = relevel(DATA[,25],ref="Medical")# We will use Medical as the reference since Surgical may oftentimes reflect worse health outcomes, 
+											# patients needing surgical treatment may oftentimes have worse outcomes.
+											
+DATA[,26] = as.factor(DATA[,26])			# [26] Masked-Facility ID: This is a categorical variable since the numbers are not reflective of a count 
+											# and are simply identifiers. We will not define a reference category here for now, since no 
+											# single facility would be considered a reference per se. 
+											
+DATA[,27] = as.factor(DATA[,27])			# [27] Facility Teaching Status: This is a categorical variable.
+DATA[,27] = relevel(DATA[,27],ref="NO")		# We will define Teaching Status = "NO" as the reference category to quantify the impact of having a teaching 
+											# status compared to facilities without that teaching status.
+											
+DATA[,28] = as.factor(DATA[,28])			# [28] Facility Academic Status: This is a categorical variable.
+DATA[,28] = relevel(DATA[,28],ref="NO")		# We will define Academic Status = "NO" as the reference category to quantify the impact of having an academic 
+											# status compared to facilities without that academic status.
+											
+DATA[,29] = as.factor(DATA[,29])			# [29] Facility Urban/Rural Status: This is a categorical variable.
+DATA[,29] = relevel(DATA[,29],ref="URBAN")	# We will define Urban as the reference category to quantify the impact of being an urban facility compared 
+											# to rural facilities.
+											
+DATA[,30] = as.factor(DATA[,30])			# [30] Facility Ownership Status: This is a categorical variable.
+DATA[,30] = relevel(DATA[,30],ref="Voluntary non-profit - Private")	# We will use the most common category as the reference category.
+	
+DATA[,31] = as.factor(DATA[,31])			# [31] Facility Size/Bed Count: Although the underlying variable is numerical, the data was provided
+											# to us as categorical for confidentiality purposes.
+DATA[,31] = relevel(DATA[,31],ref="> 400")	# The reference category will be the largest facility group in bed counts (more than 400 beds).
+
+DATA[,32] = as.numeric(DATA[,32])			# [32] Facility Case Mix Index (CMI): This is a numerical variable.
+
+DATA[,33] = as.factor(DATA[,33])			# [33] Facility State Abbreviation: This is a categorical variable. 
+DATA[,33] = relevel(DATA[,33],ref="NY")		# We will use New York as the reference, as it is the largest state (excluding DC) in expenses per capita in 
+											# healthcare in the US:
+											# https://www.kff.org/other/state-indicator/health-spending-per-capita/?currentTimeframe=0&sortModel=%7B%22colId%22:%22Health%20Spending%20per%20Capita%22,%22sort%22:%22desc%22%7D
+
+DATA[,34] = as.factor(DATA[,34])			# [34] Facility State Name: We will not use this variable, since it contains the same 
+											# information as variable 33. 
+
+# Now that all variable types have been defined, computing a summary statistics table again would be all-inclusive. However, this will also now include, 
+# for example, all patient and facility IDs, etc. Instead, let's continue to clean/process the data a bit further before re-running a summary statistics 
+# table (though, of course, you may wish to test it yourself to see how R provides all patient IDs, facility IDs, etc., which is not meaningful to us).
+
+# To summarize, we will be using the following variables in the analysis steps (pending any additional feedback from our community partner/client):
+
+# Outcome variables: 11 (specificity of principal diagnoses) and 12 & 14 (both are used to define an outcome representing specificity of secondary diagnoses)
+#					 We will also keep variable 13 as part of our outcomes in case it may be needed later.
+# Patient-level variables: 2-8 and 15-22 and 25
+# Facility-level variables:	26-33
+
+# Note that we may want to use the remaining variables at some point if needed, so we have prepared them for use in the code above, but
+# for now we will not be using them directly in our analysis.
+
+#####
+##### 6.5: Shorten Variable Names
+#####
+
+# Some of the variable names are very long. While shortening their names is not necessary, it may help to simplify the code:
+
+colnames(DATA) = c(	"Pat_ID","Age","Sex","Race","logLOS","Payer","Origin","Discharge","ICD10","ICD10_Des",
+					"SPX","Uns_SDX","Tot_Overall_SDX","Tot_Dis_SDX","Count_Proc","Period","SVI_Socioeconomic","SVI_Household","SVI_RaceEthn","SVI_HouseTransp",
+					"SVI_Overall","COVID","MSDRG","MSDRG_Des","MSDRG_Type","Fac_ID","Teaching","Academic","Rural","Ownership",
+					"Beds","CMI","State","State_Des")
+
+# Note that we call logLOS the length of stay variable because we log-transformed it in the above section.
+
+#####
+##### 6.6 Keep Complete Case Data Only for the Analysis
+#####
+
+DATA = na.omit(DATA) # The function na.omit removes all rows that contain any NA value for any variable. Note that this only removes rows with an actual 
+					 # value of NA rather than other forms of not available or not applicable that we may want to keep, such as variable 11's values, which
+					 # were left coded as "N/A".
+
+
+# To avoid potential mistakes using variables that we have already identified that we will likely not use, then we can construct objects that contain 
+# only the variables of interest:
+
+OUTCOMES = data.frame(DATA[,11:14]) 
+dim(OUTCOMES)
+PATIENTVARS = data.frame(DATA[,c(2:8,15:22,25)])
+dim(PATIENTVARS)
+FACILITYVARS = data.frame(DATA[,26:33])
+dim(FACILITYVARS)
+
+gc()
+
+#############################################
+## Step 7: Descriptive/Summary Statistics ###
+#############################################
+
+# Most reports/manuscripts/publications include a table of descriptive statistics that provide the reader with an understanding of the data. 
+# Recall when we introduced 'st' that 'sumtable' could also be used to compute a summary statistics table. The 'sumtable' function, which is included 
+# in the 'vtable' package, provides a nice way to perform summary statistics and even format it in an easy-to-copy-paste to Word format. Remember that 
+# you can learn more about functions using the ? command:
+
+?sumtable
+
+# In our manuscripts, we will have a single table with subsections containing the outcomes, patient-level characteristics, and facility-level 
+# variables. However, it may be useful to go through them separately for us to ensure that all changes performed in the previous steps
+# will suffice prior to starting our analysis. 
+
+# We will only need counts and percentages (for categorical variables) and means and standard deviations (for numerical variables). 
+# 'sumtable' would automatically provide quartiles, however we will likely not be reporting these in the descriptive statistics table in our 
+# manuscripts. Therefore, you can remove quartiles provided by 'sumtable' when inputting results to the summary table in Word.
+
+# You can save the results in csv format in Excel, and then copy it from Excel into a Word table. Tables in Word should use the 'Table'
+# function, so that they look more professional.
+
+#####
+##### 7.1: Summary Statistics Table for the Outcomes
+#####
+
+# The 'sumtable' function contains several arguments (some of which are optional):
+# (1)   The first argument is the data object that we want to summarize. Since we already identified variables as either categorical or 
+#		numerical, then R will know what summary to produce for each of the variables/columns in that data object.
+# (2) 	Title of the descriptive statistics table.
+# (3)	Output format (we will want to use comma separated values (csv) format when saving the descriptive statistics to a file. 
+# (4) 	File name: If saved in csv format, do not forget to use a .csv file name so that Excel or other applications recognize the format.
+
+# Table produced as html to quickly view on your screen:
+
+sumtable(OUTCOMES,title="Descriptive Statistics: Outcome Variables") 
+
+# Table produced as a comma-separated (csv) file to copy-paste easily into Excel & subsequently into Word:
+
+sumtable(OUTCOMES,title="Descriptive Statistics: Outcome Variables",out="csv",file="Descriptive_outcomes.csv") 
+
+# Note that you can locally (in Posit Cloud) download the results file above by going to the bottom-right window, clicking on Files, selecting the 
+# sub-directory 'project', then selecting the descriptive statistics file, and finally clicking on "More" - "Export".
+
+##### Remember that we can only download summary results files for our manuscripts. 
+##### WE CANNOT DOWNLOAD ANY DATASET FILES!!!
+
+#####
+##### 7.2: Summary Statistics Table for the Patient-Level Characteristics
+#####
+
+# Table produced as html to quickly view on your screen:
+
+sumtable(PATIENTVARS,title="Descriptive Statistics: Patient Characteristics") 
+
+# Table produced as a comma-separated (csv) file to copy-paste easily into Excel & subsequently into Word:
+
+sumtable(PATIENTVARS,title="Descriptive Statistics: Patient Characteristics",out="csv",file="Descriptive_patientvars.csv")
+
+gc()
+
+#####
+##### 7.3: Summary Statistics Table for the Facility-Level Variables
+#####
+
+# Table produced as html to quickly view on your screen (note that while there are 8 facility variables (i.e., columns), as we saw in the output 
+# above when computing the dimension of FACILITYVARS using 'dim(FACILITYVARS)', we do not want to include facility IDs, which is column 1 of the data object
+# FACILITYVARS as seen above, in the descriptive statistics table, since that would not be meaningful):
+
+sumtable(FACILITYVARS[,2:8],title="Descriptive Statistics: Facility Characteristics") 
+
+# Table produced as a comma-separated (csv) file to copy-paste easily into Excel & subsequently into Word:
+
+sumtable(FACILITYVARS[,2:8],title="Descriptive Statistics: Facility Characteristics",out="csv",file="Descriptive_facilityvars.csv")
+
+####################################################################################
+# Step 8: Primary Research Question: Principal Diagnosis Coding Specificity        #
+####################################################################################
+
+##### 
+##### 8.1: Filtering the Dataset for the Primary Research Question
+#####
+
+# The primary research question relates to whether coding specificity for principal diagnoses can be explained by patient- and facility-level factors.
+# Therefore, the outcome variable must be defined only for patients for whom a principal diagnosis relating to the disease was identified. 
+
+# For the purpose of this primary analysis, we must first remove the observations of patients for whom the principal diagnosis was unrelated to the 
+# disease (i.e., keeping only those for whom a 0 (unspecified principal diagnosis related to the disease) or 1 (specified principal diagnosis 
+# related to the disease) was coded. This effectively means removing those with N/A in variable 11.
+
+# The lines of code below keep only the observations of both covariates and the outcome of interest for the primary research question (i.e., 
+# coding specificity of the principal diagnosis) for which the outcome is either 0 or 1. 
+
+# Vector of TRUE/FALSE corresponding to patient-visits for whom the principal diagnosis relates to the disease:
+
+primary = OUTCOMES[,1] %in% c(0,1) 
+
+# The new object below, PRIMARY_DATA, is composed of the outcomes, patient variables, and facility variables for patients identified as having 
+# a principal diagnosis related to the disease (i.e., those for whom the 'primary' vector, introduced in the line of code above, contains a TRUE value). 
+# We construct a data frame that contains all this data. A data frame is a type of object that contains multiple types of data, and it is the common 
+# way in which data is passed to functions in R. This is useful in cases where you may have variables defined with the same name but in different 
+# data objects:
+
+PRIMARY_DATA = data.frame(OUTCOMES,PATIENTVARS,FACILITYVARS)[primary,]
+dim(PRIMARY_DATA)
+
+# Notice that the dimension of PRIMARY_DATA demonstrates that the number of patient-visits in the data for whom the principal diagnosis is related
+# to the disease is much smaller compared to the full dataset. Also, note that the # of columns (i.e., variables) in PRIMARY_DATA (28) is equal to the 
+# sum of the number of columns (i.e., variables) for each of OUTCOMES (4), PATIENTVARS (16), and FACILITYVARS (8).
+
+unique(PRIMARY_DATA$SPX)
+
+# Notice that although the now-filtered variable SPX (principal diagnosis specificity) only contains values of 0 or 1, R still recognizes it as being
+# able to have 3 possible values, with N/A as the other *possible* value. 
+
+# Therefore, by converting SPX to a numeric variable, the 'history' of having a potential value of N/A is removed. The $ sign in the code indicates that
+# we refer to the variable named "SPX" within the object PRIMARY_DATA ($ means 'variable within the object'):
+
+PRIMARY_DATA$SPX = as.numeric(PRIMARY_DATA$SPX)
+
+# The primary research question will be addressed through both univariate and multivariate analyses. The univariate analyses may help address the
+# problem of multicollinearity. Some explanatory variables will be highly correlated, and a common approach when this happens is to provide
+# a full description of the univariate associations with the outcomes, because the estimates from the multivariate analysis will be affected
+# by this multicollinearity. For example, we may find that 2 variables are univariately significantly associated with the outcome, but when
+# using the multivariate analysis, one or both of them are no longer significantly associated with the outcome. The univariate analyses provide 
+# the additional information that may help the reader understand the implications of these issues.
+
+# We will also perform a multivariate analysis because it will be the best way to address the research question by considering the full set
+# of information available. Also, the multivariate model will be the one providing best information about how well these variables jointly
+# can help explain the outcome.
+
+#####
+##### 8.2: Univariate Logistic Regression Analysis for the Primary Research Question
+#####
+
+gc()
+
+# We will store the results (odds ratios for each variable) from univariate logistic regressions in 2 different objects. Instead of defining
+# one such object for each variable, we will construct the object and incrementally add new results to it for each of the variables.
+
+# We first initialize the objects. They are initialized as empty numeric and character objects, respectively, and this simply describes to R
+# the type of data that these objects will contain.
+
+# UNIV_RESULTS will contain the odds ratios (ORs) and summary statistics for these odds ratios (all numerical values):
+
+UNIV_RESULTS = numeric(0)
+
+# PRIMARY_CATEGORIES will contain a vector of names for each of the categories. Note that each categorical variable that contains n categories
+# will result in n-1 ORs (one per category, all measured against the reference category). For numerical variables, there will be a 
+# single OR.
+
+PRIMARY_CATEGORIES = character(0)
+
+# Rather than creating multiple instances of the same code, we can create a for loop in which we define which univariate logistic
+# regression we want to perform within each such iteration of the for loop, and then store the results in each of the 2 objects above
+# in a sequential form, so that the 2 objects increase in size with each regression.
+
+# The for loop below loops over the variables in PRIMARY_DATA that will be considered for the analysis. Remember that PRIMARY_DATA was created
+# so that it includes outcome variables (first 4 variables), then patient-level variables (next 16 variables), and finally facility-level variables
+# (last 8 variables). We will use all the non-outcome variables as explanatory variables/covariates except for the facility ID (variable 21 within 
+# this object) which will be used later for other analyses. To familiarize yourself with the explanatory variables, you can run the command 
+# colnames(PRIMARY_DATA).
+
+colnames(PRIMARY_DATA)
+
+for (i in c(5:20,22:28)) # Notice that this is looping only across the explanatory variables (i.e., patient- and facility-level) but not including 
+						 # facility ID (variable 21 in PRIMARY_DATA) nor the outcomes (variables 1-4).
+{
+	# A logistic regression in R expects a formula that includes the response variable (principal diagnosis specificity; SPX), a ~ sign separating 
+	# this outcome variable from the explanatory variable(s), and then the name of the explanatory variable(s). We can construct this formula/logistic
+	# regression equation in R for each of the covariates independently by using the paste command, which combines strings with a separator of "" 
+	# (i.e., no separator). For example, when i=5, this will take the column name of variable 5 (Age) within the object PRIMARY_DATA and append it after 
+	# "SPX~" to create a formula in which the outcome is SPX and the covariate is variable 5 in PRIMARY_DATA:
+	
+	nextformula = paste("SPX~",colnames(PRIMARY_DATA)[i],sep="")
+	
+	# Once we have the formula for this iteration i of the for loop, then we pass this formula to the function 'glm' as one of the arguments. The 
+	# function glm allows you to run multiple types of analyses, including standard linear regression, logistic regression, Poisson regression,
+	# and multiple others. In order to specify that the regression to perform is logistic, the argument family = binomial(link="logit") is needed.
+	# The final argument used is specifying which object contains the data, which, in our case, is PRIMARY_DATA.
+	
+	# While the glm function performs the logistic regression, it does not provide us with the summary results that we will need, which include
+	# standard errors (SEs) for the estimates, p-values, etc. However, we can obtain these results using the 'summary()' function around the results 
+	# object that outputs from calling the glm function. Therefore, the coded line below combines the following 2 lines of commented code into a single 
+	# line of code for enhanced efficiency: 
+	# equation = glm(formula=nextformula,data=PRIMARY_DATA,family = binomial(link="logit"))
+	# regression = summary(equation)
+	
+	regression = summary(glm(formula=nextformula,data=PRIMARY_DATA,family = binomial(link="logit")))
+	
+	# While the 'regression' object contains regression parameter estimates (i.e., coefficients), it is common and more meaningful/interpretable to report 
+	# these, instead, as odds ratios (ORs), which requires an exponential transformation of the coefficients. Therefore, we will extract the regression
+	# coefficients that we intend to report and exponentiate them before storing them for each of the iterations in the for loop. The calculations for the 
+	# lower and upper bounds of the corresponding 95% confidence interval (CI) for the ORs are performed as follows:
+	
+	# Note: There are 4 columns of coefficients provided by R (in order): 
+	# Column 1: Regression (i.e., beta) parameter estimate for the corresponding variable's category
+	# Column 2: Corresponding standard error (SE) for the aforementioned regression parameter estimate
+	# Column 3: Corresponding z-value (though, this value is oftentimes not reported in outcome tables, and we will not be presenting this within our
+	#			tables in the manuscripts)
+	# Column 4: p-value corresponding to that variable's category
+	
+	odds.ratio = exp(regression$coefficients[,1]) # Recall from Healthcare Data Analysis that this is the calculation for an odds ratio, and it uses
+												  # the beta estimate.
+	lower.bound = exp(regression$coefficients[,1]-1.96*regression$coefficients[,2]) # Notice that this calculation for the lower bound of the 95% CI 
+																					# for the OR uses both the beta estimate & SE.
+	upper.bound = exp(regression$coefficients[,1]+1.96*regression$coefficients[,2]) # Notice that this calculation for the upper bound of the 95% CI 
+																					# for the OR uses both the beta estimate & SE.
+	p.value = regression$coefficients[,4] # Notice that this is the corresponding p-value (column 4) for the variable's category.
+	PRIMARY_ANALYSIS_UNIV = round(cbind(odds.ratio,lower.bound,upper.bound,p.value),3) # The 3 indicates that we round to 3 decimal places.
+	
+	# We then combine the existing/initialized UNIV_RESULTS object with the results from the aforementioned step, but removing the intercept, which we
+	# will not be reporting for the univariate analyses. 
+	
+	# The intercept is only reported for the multivariate analyses, because there will be a different intercept for each of the univariate analyses, 
+	# and it is not common in the literature to report these. 
+	# The intercept is located in the first row, and that first row can be removed by using the [-1,] command in R:
+	
+	UNIV_RESULTS = rbind(UNIV_RESULTS,PRIMARY_ANALYSIS_UNIV[-1,])
+	
+	# Similarly, we store here the values for each of the categories corresponding to these estimates, so that each row of results in 
+	# UNIV_RESULTS relates to the category contained in the object PRIMARY_CATEGORIES:
+	
+	PRIMARY_CATEGORIES = c(PRIMARY_CATEGORIES,rownames(PRIMARY_ANALYSIS_UNIV)[-1])
+	print(i) # This prints a tracker of which iteration we are currently performing, since some of the calculations can be slow.
+	gc()
+}
+
+# Notice with the following line of code that names of variables' categories are provided for UNIV_RESULTS. However, you'll see that some 
+# categories are currently listed as " ". Thus, the name is not retained, which appears to be occuring for non-categorical variables.
+
+rownames(UNIV_RESULTS) 
+
+# Since we have the names of the categories already stored in PRIMARY_CATEGORIES and all names are there, then we can remove the current row names of 
+# UNIV_RESULTS from this object:
+
+
+
+# Then, we can combine the 2 objects (category names and results) into a single object:
+ 
+PRIMARY_UNIVARIATE_RESULTS = cbind(PRIMARY_CATEGORIES,UNIV_RESULTS)
+
+# Now let's check that there are no longer empty variable names by looking at column 1 of PRIMARY_UNIVARIATE_RESULTS, which lists PRIMARY_CATEGORIES, 
+# as seen in the line of code above:
+
+PRIMARY_UNIVARIATE_RESULTS[,1] 
+
+dim(PRIMARY_UNIVARIATE_RESULTS) # Notice that the 1st column is now the names of variables' categories (all of them!), while the remaining columns  
+								# comprise ORs (column 2), corresponding 95% CIs for the ORs (lower bound, column 3; and upper bound, column 4), and 
+								# p-values (column 5).
+
+# Let's look at this object so that we can gain an intuition of what we have computed & results obtained throughout these univariate analyses:
+
+print(PRIMARY_UNIVARIATE_RESULTS)
+
+# Notice that some ORs may be 0, and their corresponding 95% CIs will also be affected with lower bounds of 0 and upper bounds of infinity 
+# (or very large values). This happens when there are few observations for any given category within a variable. For example, you can use the
+# following code to see the number of observations (i.e., patient-visits) by state within PRIMARY_DATA, with some states having a very small
+# number of patients per state, yielding very large SEs and therefore extremely wide 95% CIs:
+
+table(PRIMARY_DATA$State)
+
+# We can assess p-values (are they <0.05?) and 95% CIs for ORs (does the value 1 fall outside the interval?) to determine which variables are univariately 
+# significantly associated with coding specificy of the principal diagnosis.
+
+# Finally, we can save the results table into a csv file for easy processing in Word:
+
+write.table(PRIMARY_UNIVARIATE_RESULTS,file="Primary_Univariate_Logistic.csv",sep=",")
+
+# When a p-value is smaller than 0.001 or appears as 0, we report it as <0.001. Note that p-values cannot be exactly zero, so values that
+# were rounded as zero in R indicate that they were smaller than 0.0005, so that when rounded to the third decimal place, they were rounded
+# down to zero instead of up to 0.001.
+
+#####
+##### 8.3: Multivariate Logistic Regression Analysis for the Primary Research Question
+#####
+
+# Although we have determined which variables are univariately significantly associated with coding specificity of the principal diagnosis, we will next 
+# perform a multivariate logistic regression of the principal diagnosis specificity as a function of all patient- and facility-level covariates except for
+# facility ID.
+
+# We will use facility ID later for an analysis of the differences between actual specificity and expected specificity, which is the
+# facility-specific metric to assess variation in coding specificity across facilities, which our community/partner client wishes to obtain. 
+
+# By not including facility ID as a covariate in the multivariate logistic regression, we will be able to use the results from this model to construct 
+# a metric for measuring the performance of each facility.
+
+multivariate.regression = glm(SPX~Sex+Age+Race+logLOS+Payer+Origin+Discharge+Count_Proc+Period+SVI_Socioeconomic+SVI_Household+SVI_RaceEthn+
+						SVI_HouseTransp+SVI_Overall+COVID+MSDRG_Type+Teaching+Academic+Rural+Ownership+Beds+CMI+State,data=PRIMARY_DATA,
+						family = binomial(link="logit"))
+gc()
+
+# Note that since the multivariate logistic regression is a single model containing all the variables, then we list all of the variables here. We could
+# do this without specifying the actual variables but it may be useful to do it this way in case the client wants us to perform any additional
+# analysis in which some of these variables are excluded from the analysis.
+
+# Also, note that we are using the redefined variable names (from Section 6.5) throughout these analyses. And, since the multivariate analysis
+# is our primary analysis, then we call this PRIMARY_ANALYSIS:
+
+PRIMARY_ANALYSIS = summary(multivariate.regression)
+
+# Similar to what we did before, we extract ORs and p-values to report. Because we are using the multivariate analysis object, rather than a 
+# composite of univariate analysis objects, then we do not need to extract the category names (they are already attached to the results).
+# We only need to store the multivariate results. Also, another difference is that the intercept will be reported in the multivariate analysis.
+
+multivariate.odds.ratio = exp(PRIMARY_ANALYSIS$coefficients[,1])
+multivariate.lower.bound = exp(PRIMARY_ANALYSIS$coefficients[,1]-1.96*PRIMARY_ANALYSIS$coefficients[,2])
+multivariate.upper.bound = exp(PRIMARY_ANALYSIS$coefficients[,1]+1.96*PRIMARY_ANALYSIS$coefficients[,2])
+multivariate.p.value = PRIMARY_ANALYSIS$coefficients[,4]
+PRIMARY_MULTIVARIATE_RESULTS = round(cbind(multivariate.odds.ratio,multivariate.lower.bound,multivariate.upper.bound,multivariate.p.value),3)
+	
+print(PRIMARY_MULTIVARIATE_RESULTS)
+
+write.table(PRIMARY_MULTIVARIATE_RESULTS,file="Primary_Multivariate_Logistic.csv",sep=",")
+
+# We can also extract 1 more element, which is the fitted values. The fitted values are the probabilities of principal diagnosis specificity for 
+# each patient-visit upon accounting for the different covariates. 
+
+# Think of fitted values as the expected coding specificity of the principal diagnosis upon accounting for how the different covariates are 
+# associated with that specificity. We will be using these fitted values in the next section.
+
+# The object PRIMARY_FITTED now contains the fitted probabilities of coding specificity of the principal diagnosis for each patient-visit:
+
+PRIMARY_FITTED = multivariate.regression$fitted.values
+gc()
+
+# Multicollinearity: We have to be careful with conclusions about any given variable due to the high multicollinearity between some variables. 
+# For example, if most patients of a given race/ethnicity are younger, and younger patients experience different levels of principal diagnosis coding 
+# specificity than older patients, then it is unclear whether it is actually age or race (or both) that is/are truely associated with the outcome.
+ 
+# The following table and Chi-square test do not need to go in the manuscripts. They are simply for you to understand that variables can be  
+# highly correlated, and, when this happens, the information content within them is shared and difficult to attribute to one variable vs. another
+# when performing multivariate analyses.
+
+table(PRIMARY_DATA$Age,PRIMARY_DATA$Race)
+chisq.test(PRIMARY_DATA$Age,PRIMARY_DATA$Race)
+
+# While the model is correct when covariates are highly correlated, the resulting significant associations found may not be completely accurate 
+# due to multicollinearity. Therefore, we should focus on the overall ***model performance*** and how we can use it to construct a metric to 
+# assess facilities' variation by coding specificity, rather than place too much emphasis on which variables are/are not statistically significant.
+
+#####
+##### 8.4: Calculate the (Multivariate) Area Under the Curve (AUC) and Visualize the Receiver Operating Characteristic (ROC) Curve of the 
+#####      Multivariate Model for Addressing the Primary Research Question
+#####
+
+# The receiver operating characteristic (ROC) curve is a graphical representation of the performance of a binary classification model. It plots
+# the trade-off between 2 components: true positive rate (i.e., sensitivity; y-axis) and true negative rate (i.e., specificity; x-axis). The 
+# true positive rate in our study represents how well we can identify whether the patient-visit had a principal diagnosis that was specified for 
+# different values of the estimated/fitted probabilities. 
+
+# We should not mistake statistical specificity (i.e., true negative rate) for the purposes of the ROC curve with coding specificity for the purposes 
+# of our research question. In biostatistical terms, specificity refers to the proportion of true negatives out of the total of actual negatives in 
+# the data (i.e., true negative rate). 
+
+# The ideal ROC curve would be such that the curve goes up vertical from 0 to 1 on the left side of the graph (i.e., y-axis) and then horizontal from 
+# 1 to 0 on the x-axis (i.e., notice that the horizontal axis goes from 1, on the left side of the x-axis, to 0 on the right side of the x-axis). 
+# Why? Because it would mean that we can achieve perfect classification.
+
+# A diagonal curve/line represents that there is no information in the model (i.e., equivalent to a coin toss to determine our expected outcome).
+
+# A curve below the diagonal indicates that our model actually performs worse than a coin flip.
+
+# The higher above the diagonal the curve is, the better the fit of the model to achieve good classification.
+
+# While we normally split the data into 2 subsets - one for fitting and one for forecasting - the purpose of this exercise is not to 
+# demonstrate good predictive power of the model, but to demonstrate good fit/performance of the multivariate model. Therefore, we can use the 
+# full dataset, rather than a partitioned one for this ROC curve analysis.
+
+# The roc function in R requires 2 arguments. The actual values of the principal diagnosis coding specificity (outcome variable) and the fitted 
+# values (estimated/fitted probabilities of principal diagnosis coding specificity adjusted by all covariatess used in the multivariate model): 
+
+ROC = roc(PRIMARY_DATA$SPX,PRIMARY_FITTED)
+
+# The auc function in R calculates the area under the [ROC] curve (AUC) using the same arguments:
+
+AUC = auc(PRIMARY_DATA$SPX,PRIMARY_FITTED)
+
+# We can plot the ROC curve and print the actual value of the AUC estimate (the higher the AUC value the better, with the range of AUC from 0 to 1
+# with values above 0.7 generally considered to be acceptable/good):
+
+plot(ROC)
+print(AUC)
+
+# The aforementioned multivariate logistic regression analysis allowed us to construct a model to assess the probability (i.e., fitted values) 
+# of principal diagnosis coding specificity accounting for the patient- and facility-level factors that we included in the model. Then, the 
+# corresponding ROC curve/AUC analysis allowed us to assess the model fit/performance to ascertain that we have a strong model. Therefore, we
+# can use the constructed model to assess associations between these variables and coding specificity while acknowledging the limitation of 
+# multicollinearity.
+
+# Thus, we have accomplished Goal 2 of our Research Objective from our community partner/client's presentation from August 31st (slide 5).
+
+# However, how can this be further useful to our community partner/client to acheive Goal 1 from his presentation? 
+
+
+##### 
+##### 8.5: Use the Fitted Values to Construct a Facility-Specific Metric for Measuing Variation in Coding Specificity
+#####
+
+# Our client will need to report to each facility how well they are performing versus their peer facilities in terms of principal diagnosis 
+# coding specificity. Therefore, it would be useful for our client to have a metric that can be used to compare each facility to their peers. 
+# However, that comparison must be made on the basis of the model-adjusted results (i.e., upon adjusting for all patient & facility covariates 
+# used in the multivariate logistic regression model, is the facility performing in line with their peers (or better or worse) in terms of principal 
+# diagnosis coding specificity of patient-visits experienced in that facility?)
+
+# We will have multiple patient-visits for each facility, so we can use a biostatistical theory to construct this metric. Namely, the expected value 
+# of the sum of specified principal diagnoses across these patient-visits will be the sum of the expected values across these patient-visits.
+# From a biostatistical standpoint, the expected value of the sum of multiple independent (even if not identically distributed) Bernoulli (i.e., 0/1) 
+# variables is the sum of the probabilities (i.e., fitted, or expected, values extracted from the multivariate logistic model in the prior section). 
+# The distribution of this sum is called a Poisson Binomial distribution, which we will use in computing the facility-specific metric.
+
+# Therefore, for each facility, the sum of specified principal diagnoses will be expected to be equal to the sum of the fitted values (i.e., probabilities) 
+# of principal diagnosis coding specificy for the corresponding patient-visits. 
+
+# I developed this approach and have used it already in a publication that Mike and I published this year in Medical Care (along with other colleague 
+# co-authors): https://pubmed.ncbi.nlm.nih.gov/37219083/
+
+# The facility-level principal diagnosis coding specificity will be distributed as a Poisson Binomial distribution, which is the distribution
+# resulting from a sum of Bernoulli random variables with different probabilities (which is exactly the outcome of our multivariate logistic regression). 
+# This Poisson Binomial distribution will have a mean equal to the sum of fitted probabilities resulting from our multivariate logistic regression. 
+
+# Do not confuse the Poisson Binomial distribution with either the Poisson or the Binomial distributions, which are different.
+# Although outside the scope of this course, for those interested in delving deeper into the biostatistical methods/theory behind this concept, you 
+# can review this MIT lecture at: https://people.csail.mit.edu/ronitt/COURSE/S19/Handouts/scribe17.pdf.
+
+# Note that you will likely work with biostatisticians on public health team projects in the real world, so there will be biostatistical methods/analyses, 
+# such as these, that are necessary to solve complex, real-world public health problems in practice yet are more advanced and require biostatistical 
+# expertise. Even if you have a biostatistician on your team, it is still important for you to at least understand the big picture calculations 
+# and resons for those calculations and results. 
+
+# We can construct an object that will contain 7 values for each facility:
+# Value1: Facility ID
+# Value2: Total count of observed specified principal diagnoses for that facility
+# Value3: Expected total count of specified principal diagnoses for that facility 
+#	  	  This is equivalent to the sum of the fitted probabilities for that facility resulting from the multivariate logistic regression (the expected 
+#	  	  value of a Poisson Binomial distribution is the sum of the probabilities for each of the Bernoulli components in it - i.e., the fitted 
+#	  	  probabilities, or values, resulting from the multivariate logistic regression model).
+# Value4: 2.5% value (i.e., lower bound of the 95% CI) for the total count of specified principal diagnoses for that facility
+#     	  This is calculated using the 'qpoisbinom' function in R (yielding quantiles), which calculates the 2.5th percentile for a Poisson Binomial 
+#	  	  distribution with probabilities equal to PRIMARY_FITTED[PRIMARY_DATA$Fac_ID==i] (see the code below), which are the fitted probabilities from 
+#	  	  our multivariate logistic model for the current facility only.
+# Value5: 97.5% value (i.e., upper bound of the 95% CI) for the total count of specified principal diagnoses for that facility
+#	  	  This is calculated using the 'qpoisbinom' function in R (yielding quantiles), which calculates the 97.5th percentile for a Poisson Binomial 
+#	  	  distribution with probabilities equal to PRIMARY_FITTED[PRIMARY_DATA$Fac_ID==i] (see the code below), which are the fitted probabilities from 
+#	  	  our multivariate logistic model for the current facility only.
+# Value6: Total number of counts (patient-visits) for that facility 
+#	  	  This is the number of patient-visits, which is the same as the length of the vector of probabilities we calculated in items (4) & (5) above.
+# Value7: p-value representing the strength of evidence of principal diagnosis coding specificity. 
+#	  	  Values below a user-defined threshold will indicate underperformance in principal diagnosis coding specificity by the corresponding facility. 
+#	  	  Again, we use the Poisson Binomial distribution, but this time, we will be using the 'ppoisbinom' function in R (yielding probabilities), 
+#	  	  which calculates the probability of observing a value as small or smaller than the observed one for this facility. The observed value is Value2 
+#	  	  in the code, which is the count of observed *specified* principal diagnoses.
+
+# Since all these values are actually specified in numeric form, we can create an empty PRIMARY_METRIC variable that will store all
+# these numeric values as we produce them within a for loop sequentially. 
+
+gc()
+PRIMARY_METRIC = numeric(0) # Creating empty object that will contain numbers
+for (i in unique(PRIMARY_DATA$Fac_ID)) # Looping through the number of unique facilities
+{
+	Value1 = as.numeric(i) # The facility ID for the ith facility in this loop
+	Value2 = as.numeric(sum(PRIMARY_DATA$SPX[PRIMARY_DATA$Fac_ID==i])) # Summing the number of observed specified principal diagnoses for ith facility
+	Value3 = as.numeric(sum(PRIMARY_FITTED[PRIMARY_DATA$Fac_ID==i])) # Summing the expected counts of specified principal diagnoses for ith facility
+	Value4 = as.numeric(qpoisbinom(0.025, PRIMARY_FITTED[PRIMARY_DATA$Fac_ID==i], lower_tail = TRUE, log_p = FALSE)) # Calculating lower bound of 95% CI for the total count of specified principal diagnoses for ith facility
+	Value5 = as.numeric(qpoisbinom(0.975, PRIMARY_FITTED[PRIMARY_DATA$Fac_ID==i], lower_tail = TRUE, log_p = FALSE)) # Calculating upper bound of 95% CI for the total count of specified principal diagnoses for ith facility
+	Value6 = as.numeric(length(PRIMARY_FITTED[PRIMARY_DATA$Fac_ID==i])) # Counting the number of patient-visits for ith facility
+	Value7 = as.numeric(ppoisbinom(Value2,PRIMARY_FITTED[PRIMARY_DATA$Fac_ID==i], lower_tail = TRUE, log_p = FALSE)) # Calculating p-value
+	PRIMARY_METRIC = rbind(PRIMARY_METRIC,c(Value1,Value2,Value3,Value4,Value5,Value6,Value7)) # Binding/Stacking rows vertically (e.g., row 1 has 7 values for ith facility)
+}
+PRIMARY_METRIC = data.frame(PRIMARY_METRIC) # Defining PRIMARY_METRIC as a data frame type of object (i.e., best way to handle data for ggplot, etc.)
+colnames(PRIMARY_METRIC) = c("ID","OBS","EST","LOW","UP","COUNT","PVAL")
+
+# Notice in the loop above when calculating Value4 & Value5 that we use lower_tail=TRUE to indicate that we're interested in the 2.5% & 97.5% values 
+# of the 95% CI for the total counts of specified principal diagnosis codes per facility. 
+
+# Also, log_p=FALSE simply indicates to R not to take the log when values are small (i.e., log is usually taken when values are either very large
+# or very small).
+
+# Next we need to define a threshold by which we identify/flag facilities that may be under-specifying principal diagnoses. For example, we can 
+# set the threshold at 0.025. This is subjective, but it is a common choice in the literature because it corresponds to the lower bound of a 95% CI. 
+# Facilities with p-values below 0.025 will indicate evidence of underperformance in coding specificity of principal diagnoses versus their peers. 
+
+# If we are asked to identify facilities that are most likely to be underperforming with respect to coding specificity of principal diagnoses compared
+# with their peers, then we can identify the facilities with p-values lower than the aforementioned threshold. 
+
+# The following line of code provides the list of facility IDs for all facilities with p-values of principal diagnosis specificity below 0.025:
+
+PRIMARY_METRIC$ID[PRIMARY_METRIC$PVAL<0.025]
+
+
+#####
+##### 8.6: Visualization of the Facility-Specific Metric 
+#####
+
+# It is helpful to produce a visualization of the new metric we have now created. We can do this by plotting a subset of facilities, since plotting
+# hundreds of them in a single graph would make it impossible to demonstrate how the metric actually works in practice. 
+
+# Note that we are subsetting the facilities to include only those with at least one patient-visit expected to have a coded specified principal  
+# diagnosis using the lower bound of the 95% CI. Though, you can modify this code to suit the preference of the community partner/client.
+
+PLOT_DATA = PRIMARY_METRIC[PRIMARY_METRIC$LOW>1,][1:20,]
+
+# 'alert' is a variable which will take values of 1 if the facility is underperforming with respect to coding specificity (PVAL<0.025), 2 if the 
+# facility is performing according to industry standards by falling within the 95% CI (0.025<=PVAL<=0.975) for coding specificity, and 3 if the 
+# facility is overperforming (PVAL>0.0975) with respect to coding specificity. All comparisons are versus industry standards/averages.
+
+alert = 1*(PLOT_DATA$PVAL<0.025) + 2*(PLOT_DATA$PVAL>=0.025 & PLOT_DATA$PVAL<=0.975) + 3*(PLOT_DATA$PVAL>0.975)
+
+# We can now append the vector of alert to the existing data frame, so that each row corresponds to a facility and the last column is 
+# the indicator (1,2,3) of how the facility is performing with respect to coding specificity compared to its peers:
+
+PLOT_DATA = data.frame(PLOT_DATA,alert)
+
+# We can use the mapvalues from the plyr library to map those values to a more intuitive description of their meanings:
+
+PLOT_DATA$alert = mapvalues(PLOT_DATA$alert,from=c(1,2,3), to=c("Under Specifying","Specifying In-Line with Peers","Over Specifying"))
+
+# Finally, we need to convert the facility IDs in PLOT_DATA$ID to factors because otherwise when we plot the facility metrics by ID on the x axis, 
+# ggplot would interpret those numbers as values, and place each error bar distant from the next based on the distance between ID values.
+
+PLOT_DATA$ID = as.factor(PLOT_DATA$ID)
+gc()
+
+# Then, we can use ggplot, which is a function that produces higher quality graphs in R, to plot the confidence bars (i.e., error bars) for the 
+# facility-level principal diagnosis coding specificity alongside the actual observed principal diagnosis coding specificity for each of these facilities. 
+
+# This is done by compounding 7 different commands within a ggplot object. The compounding is indicated through the "+" sign, indicating
+# that the plot has not been finalized yet, and further modifications are coming in the next commands.
+# (1) Create an empty ggplot object, to which we will add different features that we will be using. In this initial command, we just indicate 
+#     where the data is located (data=PLOT_DATA) and basic information about the aesthetics of the plot, which includes the following features
+#	  that will be used by inheriting (passing through) these aesthetics. This is called aesthetic inheritance, which in object-oriented
+#     programming means that some information/content/features/characteristics from one object/function are passed to another. In this case,
+#	  the content within aes() will be passed to 'geom_errorbar' and 'geom_point', which will use the components of aes() needed to perform their
+#     respective tasks (error bars & dot plots, respectively).
+#		x = ID tells gggplot the values of the variable in the x-axis (ID, representing facility IDs). We indicated earlier that this is a factor 
+#			because we do NOT want the values to be treated as numerical, which would create distances between each facility on the x-axis according to 
+#			the ID values. This will be used both in the geom_errorbar and the geom_point commands.
+#		y = OBS tells ggplot where we will be placing the observations on the y axis. This will be used in the geom_point command
+#		color = alert, telling ggplot that the variable alert will be used to group the data (in this case, to plot the data with different 
+#			colors). The actual colors will be defined later in scale_color_manual by assigning each of these groups to a specific color.
+#		ymin = LOW tells geom_errorbar the lower bound of the error bar for each of the facilities (remember PLOT_DATA$LOW contains a vector)
+#		ymax = UP tells geom_errorbar the upper bound of the error bar for each of the facilities (remember PLOT_DATA$UP contains a vector)
+# (2) The geom_errorbar function creates an error bar for each facility, with width of 0.5 units (you can make the bars wider if the figure 
+#	  is not sufficiently clear). The boundaries of the error bars are defined by the arguments ymin and ymax, which are defined in (1) above.
+# (3) The geom_point function plots the 'y' argument in (1) above. Remember that we calculated this by aggregating the specificity of principal 
+#     diagnoses for all patient-visits for each facility, and assigned it to the object OBS, which we stored in the PRIMARY_METRIC and 
+#     PLOT_DATA objects.
+# (4) We define the label for the x axis
+# (5) We define the label for the y axis
+# (6) We remove the right-hand side legend, which may not be necessary when only 2 colors are provided, since we can describe what the colors mean
+#	  as part of the caption of the figure in the manuscript.
+# (7) We assign each of the values of 'alert' a different color aligned with their meaning. Otherwise, the colors are defined by R in a 
+#     sequential way (you can see what happens if you do not include this command).
+
+ggplot(data=PLOT_DATA,aes(x=ID, y=OBS, color=alert,ymin=LOW, ymax=UP)) + 
+geom_errorbar(width=.5) + 
+geom_point() +
+xlab("Facility ID")+
+ylab("Observed vs 95% Confidence Interval")+
+theme(legend.position="none") +
+scale_color_manual(values=c("Under Specifying"="red","Specifying In-Line with Peers"="black","Over Specifying"="blue"))
+
+# Note that this graph allows us to identify both underperformers/under-specifiers (red) [i.e., facilities with less principal diagnosis coding 
+# specificity compared to their peers] and overperformers/over-specifiers (blue) [i.e., facilities with greater coding specificity of principal 
+# diagnoses compared to their peers] - as well as those that perform/specify in-line with their peers (black). Both of the former two options could 
+# be of interest depending on the community partner/client needs, which could include providing warnings to underperformers or highlighting 
+# achievements of overperformers, etc.
+
+################################################################################
+# Step 9: Secondary Research Question: Secondary Diagnosis Coding Specificity  #
+################################################################################
+
+##### 
+##### 9.1: Filtering the Dataset for the Secondary Research Question
+#####
+
+# The second research question is whether specificity for secondary diagnoses can be explained by patient-level and facility-level factors.
+
+# Therefore, the outcome is only relevant for those patients for which a secondary diagnosis relating to the disease was identified. 
+
+# This implies that we will need to remove observations of patient-visits for which all secondary diagnoses were unrelated to the 
+# disease (i.e., removing those for whom an NA was coded in the SDX (secondary diagnoses) outcome variable.
+# The commands below keep only the observations of both covariates and outcome for which the count of secondary diagnoses related to the
+# disease (4th outcome variable) is larger than 0.
+ 
+secondary = OUTCOMES[,4]>0 # Vector of TRUE/FALSE corresponding to whether some secondary diagnoses relate to the disease
+
+# Then, we simply define the SECONDARY_DATA as all the variables (all columns), but only the rows defined as we did above (patient-visits with
+# at least one secondary diagnosis related to the disease).
+
+SECONDARY_DATA = data.frame(OUTCOMES,PATIENTVARS,FACILITYVARS)[secondary,]
+
+# Remember that we are modelling specificity. However, our community partner/client provided us with the secondary diagnosis data as count of 
+# *unspecified* secondary diagnoses related to the disease. Therefore, we must first convert that number to be the count of *specified* secondary 
+# diagnoses related to the disease. We can do that easily because we have the total number of secondary diagnoses related to the disease.
+
+SECONDARY_DATA$Uns_SDX = SECONDARY_DATA$Tot_Dis_SDX - SECONDARY_DATA$Uns_SDX
+
+# We should also change the name of the variable to avoid any errors during this analysis. 
+
+names(SECONDARY_DATA)[2] = "Spc_SDX"
+
+# For the purposes of this project, we will perform only a logistic regression upon transforming the data to binary. However, note that 
+# different approaches are possible with such count data, such as a Poisson Rate regression analysis. It would be too time consuming for a 
+# single semester to go over this, but I encourage those interested in alternative modeling approaches to explore it.
+
+# The new binary variable can be defined in either of the following 2 ways:
+
+# Definition 1 (we will not use this one):
+# 	Specificity=TRUE: All secondary diagnoses related to the disease were specified
+#	Specificity=FALSE: Some of the secondary diagnoses related to the disease were not specified
+# This can be achieved by defining SECONDARY_DATA$Spc_SDX = (SECONDARY_DATA$Spc_SDX==SECONDARY_DATA$Tot_Dis_SDX)
+
+# Definition 2 (we will use this one):
+# 	Specificity=TRUE: Some of the secondary diagnoses related to the disease were specified
+# 	Specificity=FALSE: None of the secondary diagnoses related to the disease were specified
+# We could also explore the aforementioned, alternative definition 1 if our community partner/client prefers to do so. 
+
+SECONDARY_DATA$Spc_SDX = (SECONDARY_DATA$Spc_SDX!=0)
+
+#####
+##### 9.2: Univariate Logistic Regression Analysis for the Secondary Research Question
+#####
+
+# This section is equivalent to Section 8.2. The only difference is that we will be using the variable "Spc_SDX" as the outcome for
+# analysis. For more details about each of the commands, please review section 8.2.
+
+gc()
+UNIV_RESULTS = numeric(0)
+SECONDARY_CATEGORIES = character(0)
+for (i in c(5:20,22:28))
+{
+	nextformula = paste("Spc_SDX~",colnames(SECONDARY_DATA)[i],sep="")
+	regression = summary(glm(formula=nextformula,data=SECONDARY_DATA,family = binomial(link="logit")))
+	odds.ratio = exp(regression$coefficients[,1])
+	lower.bound = exp(regression$coefficients[,1]-1.96*regression$coefficients[,2])
+	upper.bound = exp(regression$coefficients[,1]+1.96*regression$coefficients[,2])
+	p.value = regression$coefficients[,4]
+	SECONDARY_ANALYSIS_UNIV = round(cbind(odds.ratio,lower.bound,upper.bound,p.value),3)
+	UNIV_RESULTS = rbind(UNIV_RESULTS,SECONDARY_ANALYSIS_UNIV[-1,])
+	SECONDARY_CATEGORIES = c(SECONDARY_CATEGORIES,rownames(SECONDARY_ANALYSIS_UNIV)[-1])
+	print(i)
+	gc()
+}
+rownames(UNIV_RESULTS) = NULL
+SECONDARY_UNIVARIATE_RESULTS = cbind(SECONDARY_CATEGORIES,UNIV_RESULTS)
+print(SECONDARY_UNIVARIATE_RESULTS)
+write.table(cbind(SECONDARY_CATEGORIES,SECONDARY_UNIVARIATE_RESULTS),file="Secondary_Univariate_Logistic.csv",sep=",")
+
+#####
+##### 9.3: Multivariate Logistic Regression Analysis for the Secondary Research Question
+#####
+
+# This section is equivalent to Section 8.3. The only difference is that we will be using the variable "Spc_SDX" as the outcome for
+# analysis. For more details about each of the commands, please review section 8.3.
+gc()
+multivariate.regression = glm(Spc_SDX~Sex+Age+Race+logLOS+Payer+Origin+Discharge+Count_Proc+Period+SVI_Socioeconomic+SVI_Household+SVI_RaceEthn+
+						SVI_HouseTransp+SVI_Overall+COVID+MSDRG_Type+Teaching+Academic+Rural+Ownership+Beds+CMI+State,data=SECONDARY_DATA,
+						family = binomial(link="logit"))
+SECONDARY_ANALYSIS = summary(multivariate.regression)
+multivariate.odds.ratio = exp(SECONDARY_ANALYSIS$coefficients[,1])
+multivariate.lower.bound = exp(SECONDARY_ANALYSIS$coefficients[,1]-1.96*SECONDARY_ANALYSIS$coefficients[,2])
+multivariate.upper.bound = exp(SECONDARY_ANALYSIS$coefficients[,1]+1.96*SECONDARY_ANALYSIS$coefficients[,2])
+multivariate.p.value = SECONDARY_ANALYSIS$coefficients[,4]
+SECONDARY_MULTIVARIATE_RESULTS = round(cbind(multivariate.odds.ratio,multivariate.lower.bound,multivariate.upper.bound,multivariate.p.value),3)
+
+print(SECONDARY_MULTIVARIATE_RESULTS)
+write.table(SECONDARY_MULTIVARIATE_RESULTS,file="Secondary_Multivariate_Logistic.csv",sep=",")
+SECONDARY_FITTED = multivariate.regression$fitted.values
+
+
+#####
+##### 9.4: Calculate the (Multivariate) AUC and Visualize the ROC of the Model for the Secondary Research Question
+#####
+
+# This section is equivalent to Section 8.4. The only difference is that we will be using the variable "Spc_SDX" as the outcome for
+# analysis. For more details about each of the commands, please review section 8.4.
+
+ROC = roc(SECONDARY_DATA$Spc_SDX,SECONDARY_FITTED)
+AUC = auc(SECONDARY_DATA$Spc_SDX,SECONDARY_FITTED)
+plot(ROC)
+print(AUC)
+
+##### 
+##### 9.5: Use the Fitted Values to Construct a Facility-Specific Metric
+#####
+
+# This section is equivalent to Section 8.5. The only difference is that we will be using the variable "Spc_SDX" as the outcome for
+# analysis. For more details about each of the commands, please review section 8.5.
+
+gc()
+SECONDARY_METRIC = numeric(0)
+for (i in unique(SECONDARY_DATA$Fac_ID))
+{
+	Value1 = as.numeric(i) # The identifier for the i-th facility in this loop
+	Value2 = as.numeric(sum(SECONDARY_DATA$Spc_SDX[SECONDARY_DATA$Fac_ID==i]))
+	Value3 = as.numeric(sum(SECONDARY_FITTED[SECONDARY_DATA$Fac_ID==i]))
+	Value4 = as.numeric(qpoisbinom(0.025, SECONDARY_FITTED[SECONDARY_DATA$Fac_ID==i], lower_tail = TRUE, log_p = FALSE))
+	Value5 = as.numeric(qpoisbinom(0.975, SECONDARY_FITTED[SECONDARY_DATA$Fac_ID==i], lower_tail = TRUE, log_p = FALSE))
+	Value6 = as.numeric(length(SECONDARY_FITTED[SECONDARY_DATA$Fac_ID==i]))
+	Value7 = as.numeric(ppoisbinom(Value2,SECONDARY_FITTED[SECONDARY_DATA$Fac_ID==i], lower_tail = TRUE, log_p = FALSE))
+	SECONDARY_METRIC = rbind(SECONDARY_METRIC,c(Value1,Value2,Value3,Value4,Value5,Value6,Value7))
+}
+SECONDARY_METRIC = data.frame(SECONDARY_METRIC)
+colnames(SECONDARY_METRIC) = c("ID","OBS","EST","LOW","UP","COUNT","PVAL")
+
+SECONDARY_METRIC$ID[SECONDARY_METRIC$PVAL<0.025]
+
+#####
+##### 9.6: Visualization of Facility-Specific Metric
+#####
+
+# This section is equivalent to Section 8.6. The only difference is that we will be using the variable "Spc_SDX" as the outcome for
+# analysis. For more details about each of the commands, please review section 8.6.
+
+# Note that you may need to adjust the threshold of at least 1 expected specified secondary diagnosis to match the larger number of
+# counts experienced for secondary diagnoses. You can do so by modifying the first command in the block below.
+
+gc()
+PLOT_DATA2 = SECONDARY_METRIC[SECONDARY_METRIC$LOW>1,][1:20,]
+alert = 1*(PLOT_DATA2$PVAL<0.025) + 2*(PLOT_DATA2$PVAL>=0.025 & PLOT_DATA2$PVAL<=0.975) + 3*(PLOT_DATA2$PVAL>0.975)
+PLOT_DATA2 = data.frame(PLOT_DATA2,alert)
+PLOT_DATA2$alert = mapvalues(PLOT_DATA2$alert,from=c(1,2,3), to=c("Under Specifying","Specifying In-Line with Peers","Over Specifying"))
+PLOT_DATA2$ID = as.factor(PLOT_DATA2$ID)
+ggplot(data=PLOT_DATA2,aes(x=ID, y=OBS, color=alert,ymin=LOW, ymax=UP)) + 
+geom_errorbar(width=.5) + 
+geom_point() +
+xlab("Facility ID")+
+ylab("Observed vs 95% Confidence Interval")+
+theme(legend.position="none") +
+scale_color_manual(values=c("Under Specifying"="red","Perform"="black","Over Specifying"="blue"))
+
+# We can also plot this in the log-10 scale for better visualization
+
+ggplot(data=PLOT_DATA2,aes(x=ID, y=log(OBS,base=10), color=alert,ymin=log(LOW,base=10), ymax=log(UP,base=10))) + 
+geom_errorbar(width=.5) + 
+geom_point() +
+xlab("Facility ID")+
+ylab("Observed vs 95% Confidence Interval (log10 scale)")+
+theme(legend.position="none") +
+scale_color_manual(values=c("Underperform"="red","Specifying In-Line with Peers"="black","Overperform"="blue"))
+
+#########################################################################################################
+## Step 10: U.S. Map/Geographical Visualization of Adjusted Odds Ratios of Coding Specificity by State ##
+#########################################################################################################
+
+# I will demonstrate these U.S. map visualizations using coding specificity of secondary diagnoses results. However, this R code can be adapted to 
+# demonstrate similar U.S. map visualizations for coding specificity of principal diagnosis results. 
+
+# We already created the multivariate logistic regression results object (SECONDARY_MULTIVARIATE_RESULTS), which included, for each (category) of 
+# the explanatory variables, the adjusted (i.e., accounting, or controlling, for all other variables included in the model) odds ratio of secondary 
+# diagnoses coding specificity for a given variable/variable category (compared to the reference category for categorical variables), 
+# corresponding 95% CI for that OR, and corresponding p-value for that OR.
+
+# The variables' (category) names are included as the rownames of SECONDARY_MULTIVARIATE_RESULTS. Note that the category names include the string "State" 
+# for the State variable, so if we want to identify results for the states (only) for visualization of these odds ratios, then we can use the 
+# 'substring' function. The arguments for this function are the string vector (rownames(SECONDARY_MULTIVARIATE_RESULTS), in this case) as well as the 
+# first and last elements of the string with which we are interested. Since we are interested in extracting the first 5 characters from each of the 
+# components in the vector rownames(SECONDARY_MULTIVARIATE_RESULTS) and comparing them with "State", then this will provide us with a vector of 
+# TRUE/FALSE to identify the coefficients/values relating to states in the results objects.
+
+rowstoextract = substring(rownames(SECONDARY_MULTIVARIATE_RESULTS),1,5)=="State"
+
+# For the resulting coefficients/values relating to the State variable (i.e., rowstoextract=TRUE), extract the 4th column (p-value) and evaluate whether 
+# it is smaller than 0.05. This will create a vector of TRUE/FALSE among State variables/categories depending on whether the p-value for the adjusted OR 
+# is statistically significant - in other words, for a given state and accounting for all other patient- and facility-level covariates included in the 
+# multivariate logistic regression model, is there significantly different (whether more or less) coding specificity of secondary diagnoses within
+# that state compared with the reference state (initially defined as NY in this case)? We will only be plotting the state adjusted odds ratios that are 
+# significantly different from 1 (i.e., those with a corresponding p-value for the OR of <0.05).
+
+subset_of_coefficients = as.numeric(SECONDARY_MULTIVARIATE_RESULTS[,4])<0.05
+
+# Extract the estimated adjusted odds ratios and the 2 initials of the states - only for the statistically significant state adjusted odds ratios 
+# (i.e., those with p<0.05). We can do this by creating an object that contains all the SECONDARY_MULTIVARIATE_RESULTS data but only for the 
+# values that correspond to state and have a p-value<0.05: we will call this object EXTRACT.
+
+EXTRACT = SECONDARY_MULTIVARIATE_RESULTS[rowstoextract & subset_of_coefficients,]
+
+# Then, the 2 state initials are located in the 6th and 7th characters of the category names (i.e., the rownames of SECONDARY_MULTIVARIATE_RESULTS 
+# corresponding to states whose adjusted ORs are significant, which have already been identified via EXTRACT). 
+
+state = substring(rownames(EXTRACT),6,7)
+
+# Create an object called OR_CATEGORY that identifies and stores the adjusted odds ratio categories for visual granularity plotting purposes. Then, 
+# store both the state and OR_CATEGORY objects into a data frame called GEODATA to pass it to the 'plot_usmap' function:
+
+OR_CATEGORY = EXTRACT[,1]
+OR_CATEGORY[as.numeric(EXTRACT[,1])<1]="OR<1"
+OR_CATEGORY[as.numeric(EXTRACT[,1])>1 & as.numeric(EXTRACT[,1])<=3]="OR>1 & OR<=3"
+OR_CATEGORY[as.numeric(EXTRACT[,1])>3 & as.numeric(EXTRACT[,1])<=6]="OR>3 & OR<=6"
+OR_CATEGORY[as.numeric(EXTRACT[,1])>6]="OR>6"
+GEODATA = data.frame(state=state,estimate=OR_CATEGORY)
+
+# The library 'usmap' provides a ggplot-style function to plot a US map with state boundaries and values corresponding to each of the states.
+# This function is composed of the following commands:
+# (1) 'plot_usmap' acts as a template to store both the data=GEODATA used and the values="estimate" that will be plotted. Note that
+#     the estimate plotted will be the adjusted odds ratio for the corresponding state, which is provided as a component of GEODATA.
+# (2) 'labs' provides labels for the graph (both title and subtitle).
+# (3) 'theme' allows us to locate the position of the legend describing the color coding.
+
+plot_usmap(data = GEODATA, values = "estimate") +  
+labs(title = "US States", subtitle = "Adjusted Odds Ratios of Secondary Diagnosis Coding Specificity by State (Compared to NY, Reference)") +
+theme(legend.position = "right")
+  
+# Some states are presented as grey because their adjusted odds ratio estimates were not statistically significant (i.e., p>=0.05). 
+  
+# Would it make sense to explore a different reference level for the state? This would be a great question for our community partner/client during 
+# our meetings with Mike next week! Perhaps perform the analysis using California (the most populous state as the reference state)?
+
+
+
